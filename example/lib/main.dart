@@ -6,7 +6,6 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,6 +28,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  String postCode = '-';
+  String address = '-';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,8 +44,19 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             TextButton(
               onPressed: () async {
-                var result = await Navigator.push(context, MaterialPageRoute(builder: (_) => KpostalView()));
-                print('example log: $result');
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => KpostalView(
+                      callback: (Kpostal result) {
+                        setState(() {
+                          this.postCode = result.postCode;
+                          this.address = result.address;
+                        });
+                      },
+                    ),
+                  ),
+                );
               },
               style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
               child: Text(
@@ -51,6 +64,17 @@ class _MyHomePageState extends State<MyHomePage> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
+            Container(
+              padding: EdgeInsets.all(40.0),
+              child: Column(
+                children: [
+                  Text('postCode', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: ${this.postCode}'),
+                  Text('address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: ${this.address}'),
+                ],
+              ),
+            )
           ],
         ),
       ),
