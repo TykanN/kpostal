@@ -58,7 +58,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(Colors.blue)),
               child: Text(
                 'Search Address',
                 style: TextStyle(color: Colors.white),
@@ -68,9 +70,11 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  Text('postCode', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('postCode',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.postCode}'),
-                  Text('address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('address',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.address}'),
                 ],
               ),

@@ -48,7 +48,8 @@ class _KpostalViewState extends State<KpostalView> {
             iconTheme: IconThemeData().copyWith(color: widget.titleColor),
           ),
       body: WebView(
-          initialUrl: 'https://tykann.github.io/kpostal/assets/kakao_postcode.html',
+          initialUrl:
+              'https://tykann.github.io/kpostal/assets/kakao_postcode.html',
           javascriptMode: JavascriptMode.unrestricted,
           javascriptChannels: <JavascriptChannel>[_channel].toSet(),
           onWebViewCreated: (WebViewController webViewController) async {

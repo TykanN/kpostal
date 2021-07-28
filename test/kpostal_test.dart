@@ -11,7 +11,8 @@ void main() {
   }
 
   testWidgets('Create Kopo', (WidgetTester tester) async {
-    await tester.pumpWidget(createWidgetForTesting(child: KpostalView(title: 'title')));
+    await tester
+        .pumpWidget(createWidgetForTesting(child: KpostalView(title: 'title')));
 
     final titleFinder = find.text('title');
     expect(titleFinder, findsOneWidget);
