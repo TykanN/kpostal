@@ -1,7 +1,7 @@
 # About kpostal
 
-Kpostal package can search for Korean postal addresses using Kakao postcode service (https://postcode.map.daum.net/guide).
-This package is inspired by Kopo package that is discontinued (https://pub.dev/packages/kopo).
+Kpostal package can search for Korean postal addresses using [Kakao postcode service](https://postcode.map.daum.net/guide).
+This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that is discontinued.
 
 Support Null-Safety!
 
@@ -10,7 +10,7 @@ Support Null-Safety!
 Add kpostal to your pubspec.yaml file:
 ```yaml
 dependencies:
-  kpostal: ^0.1.0
+  kpostal: ^0.1.1
 ```
 
 ## Setup
@@ -29,7 +29,7 @@ TextButton(
             builder: (_) => KpostalView(
                 callback: (Kpostal result) {
                     print(reuslt.address);
-                ),
+                }, 
             ),
         );
     },
