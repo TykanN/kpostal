@@ -1,0 +1,47 @@
+<html>
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>주소검색</title>
+</head>
+<style>
+html,body{ margin:0; padding:0; height:100%; width:100%; }
+#full-size{
+  height: 100%;
+  width: 100%;
+  overflow:hidden; /* or overflow:auto; if you want scrollbars */
+}
+</style>
+<body>
+<div id="full-size"></div>
+</body>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript">
+    // 우편번호 찾기 화면을 넣을 element
+    var element_layer = document.getElementById('full-size');
+
+    function callbackMessage(message) {
+        try { onComplete.postMessage(message, "*");} catch(err) {}
+    }
+
+    daum.postcode.load(function() {
+
+      new daum.Postcode({
+          oncomplete: function(data) {
+              // JS callback
+              callbackMessage(JSON.stringify(data));
+          },
+          width : '100%',
+          height : '100%',
+          maxSuggestItems : 5,
+          alwaysShowEngAddr: false,
+          hideMapBtn: true,
+          hideEngBtn: false,
+      }).embed(element_layer);
+
+      // show iframe element
+      element_layer.style.display = 'block';
+    });
+
+</script>
+</html>
