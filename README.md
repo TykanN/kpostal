@@ -28,10 +28,10 @@ TextButton(
         await Navigator.push(context, MaterialPageRoute(
             builder: (_) => KpostalView(
                 callback: (Kpostal result) {
-                    print(reuslt.address);
+                    print(result.address);
                 }, 
             ),
-        );
+        ));
     },
     child: Text('Search!'),
 ),
