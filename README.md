@@ -4,7 +4,6 @@
 [![English](https://img.shields.io/badge/Language-English-9cf?style=for-the-badge)](README.md)
 [![Korean](https://img.shields.io/badge/Language-Korean-9cf?style=for-the-badge)](README.ko-kr.md)
 
-![Screenshot](https://tykann.github.io/kpostal/assets/screenshot.png)
 
 # About kpostal
 
@@ -12,6 +11,8 @@ Kpostal package can search for Korean postal addresses using [Kakao postcode ser
 This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that is discontinued.
 
 Support Null-Safety!
+
+<div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
 
 ## Getting Started
 

@@ -4,7 +4,6 @@
 [![English](https://img.shields.io/badge/Language-English-blueviolet?style=for-the-badge)](README.md)
 [![Korean](https://img.shields.io/badge/Language-Korean-blueviolet?style=for-the-badge)](README.ko-kr.md)
 
-![스크린샷](https://tykann.github.io/kpostal/assets/screenshot.png)
 
 # kpostal에 대해
 
@@ -12,6 +11,8 @@ Kpostal 패키지는 [카카오 우편번호 서비스](https://postcode.map.dau
 더 이상 지원이 중단된 [Kopo](https://pub.dev/packages/kopo) 패키지를 참고하여 제작되었습니다.
 
 Null-Safety를 지원합니다.
+
+<div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
 
 ## 시작하기
 
