@@ -129,4 +129,14 @@ class Kpostal {
         userSelectedType: json['userSelectedType'] as String,
         userLanguageType: json['userLanguageType'] as String,
       );
+
+  /// 유저가 화면에서 선택한 주소를 그대로 return합니다.
+  String get userSelectedAddress {
+    if (this.userSelectedType == 'J') {
+      if (this.userLanguageType == 'E') return this.jibunAddressEng;
+      return this.jibunAddress;
+    }
+    if (this.userLanguageType == 'E') return this.roadAddressEng;
+    return this.roadAddress;
+  }
 }
