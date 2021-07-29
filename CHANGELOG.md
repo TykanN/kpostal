@@ -1,3 +1,8 @@
+## 0.1.3
+* update README.md
+* add Korean docs
+* add 'userSelectedAddress' getter
+
 ## 0.1.2
 * update docs typo
 
