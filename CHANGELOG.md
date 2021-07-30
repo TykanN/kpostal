@@ -1,3 +1,6 @@
+## 0.2.0
+* add search w/ localhost server
+
 ## 0.1.3
 * update README.md
 * add Korean docs

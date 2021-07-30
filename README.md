@@ -10,6 +10,11 @@
 Kpostal package can search for Korean postal addresses using [Kakao postcode service](https://postcode.map.daum.net/guide).   
 This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that is discontinued.
 
+By default, it uses the Address Search page hosted on Github.   
+It's the easiest way to use it.
+
+To respond to errors that arise from hosting problems, we also support hosting local server.
+
 Support Null-Safety!
 
 <div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
@@ -19,13 +24,44 @@ Support Null-Safety!
 Add kpostal to your pubspec.yaml file:
 ```yaml
 dependencies:
-  kpostal: ^0.1.3
+  kpostal:
 ```
 
 ## Setup
 
-🧑🏻‍💻 Nothing to do! Both iOS and Android.
+**🧑🏻‍💻 Neither iOS nor Android requires any action when using default hosting.**
 
+### ❗ Use local server
+If you use the [useLocalServer] option to host a local server, you should make the platform specific settings required for http communication.
+### Android
+Add `android:usesClearextTraffic="true"` to <application> in AndroidManifest.xml file.
+```xml
+<application
+        android:label="[your_app]"
+        android:icon="@mipmap/ic_launcher"
+        ...
+        android:usesCleartextTraffic="true"
+        ...
+        >  
+    ...
+</application>
+```
+
+### iOS
+Add `NSAppTransportSecurity` to info.plist file.
+```xml
+<plist version="1.0">
+<dict>
+    ...
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+    </dict>
+    ...
+</dict>
+</plist>
+```
 ## Example
 
 ```dart
@@ -53,4 +89,11 @@ TextButton(
     },
     child: Text('Search!'),
 ),
+
+// Use local server.
+KpostalView(
+    useLocalServer: true, // default is false
+    localPort: 8080, // default is 8080
+    callback: ...
+)
 ```

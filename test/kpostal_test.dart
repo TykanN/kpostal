@@ -10,7 +10,7 @@ void main() {
     );
   }
 
-  testWidgets('Create Kopo', (WidgetTester tester) async {
+  testWidgets('Create Kpostal', (WidgetTester tester) async {
     await tester
         .pumpWidget(createWidgetForTesting(child: KpostalView(title: 'title')));
 

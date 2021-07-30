@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kpostal/kpostal.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(MyApp());
 }
 
@@ -48,6 +49,8 @@ class _MyHomePageState extends State<MyHomePage> {
                   context,
                   MaterialPageRoute(
                     builder: (_) => KpostalView(
+                      useLocalServer: true,
+                      localPort: 1024,
                       callback: (Kpostal result) {
                         setState(() {
                           this.postCode = result.postCode;
