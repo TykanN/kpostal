@@ -5,6 +5,7 @@ export 'src/kpostal_model.dart';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart' as ia;
+import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/kpostal_model.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
@@ -47,6 +48,10 @@ class KpostalView extends StatefulWidget {
   /// 로컬 서버 포트. 기본값은 8080
   final int localPort;
 
+  final Color loadingColor;
+
+  final Widget? onLoading;
+
   KpostalView(
       {Key? key,
       this.title = '주소검색',
@@ -55,7 +60,9 @@ class KpostalView extends StatefulWidget {
       this.appBar,
       this.callback,
       this.useLocalServer = false,
-      this.localPort = 8080})
+      this.localPort = 8080,
+      this.loadingColor = Colors.blue,
+      this.onLoading})
       : assert(1024 <= localPort && localPort <= 49151,
             'localPort is out of range. It should be from 1024 to 49151(Range of Registered Port)'),
         super(key: key);
@@ -67,11 +74,19 @@ class KpostalView extends StatefulWidget {
 class _KpostalViewState extends State<KpostalView> {
   late WebViewController _controller;
   WebViewController get controller => _controller;
+  bool initLoadComplete = false;
 
   late ia.InAppWebViewController _inAppController;
   ia.InAppWebViewController get inAppController => _inAppController;
   ia.InAppLocalhostServer? _localhost;
   bool isLocalhostOn = false;
+
+  @override
+  void setState(VoidCallback fn) {
+    if (this.mounted) {
+      super.setState(fn);
+    }
+  }
 
   @override
   void initState() {
@@ -106,7 +121,22 @@ class _KpostalViewState extends State<KpostalView> {
             ),
             iconTheme: IconThemeData().copyWith(color: widget.titleColor),
           ),
-      body: _buildWebView(),
+      body: Stack(
+        children: [
+          _buildWebView(),
+          initLoadComplete
+              ? const SizedBox.shrink()
+              : Container(
+                  width: double.infinity,
+                  height: double.infinity,
+                  color: Colors.white,
+                  child: Center(
+                      child: widget.onLoading ??
+                          CircularProgressIndicator(
+                              color: widget.loadingColor)),
+                ),
+        ],
+      ),
     );
   }
 
@@ -121,6 +151,11 @@ class _KpostalViewState extends State<KpostalView> {
         initialUrl: _initialUrl,
         javascriptMode: JavascriptMode.unrestricted,
         javascriptChannels: <JavascriptChannel>[_channel].toSet(),
+        onPageFinished: (_) async {
+          setState(() {
+            initLoadComplete = true;
+          });
+        },
         onWebViewCreated: (WebViewController webViewController) async {
           this._controller = webViewController;
         });
@@ -129,8 +164,12 @@ class _KpostalViewState extends State<KpostalView> {
   // 자바스크립트 채널
   JavascriptChannel get _channel => JavascriptChannel(
       name: 'onComplete',
-      onMessageReceived: (JavascriptMessage message) {
+      onMessageReceived: (JavascriptMessage message) async {
         Kpostal result = Kpostal.fromJson(jsonDecode(message.message));
+
+        Location _latLng = await result.latLng;
+        result.latitude = _latLng.latitude;
+        result.longitude = _latLng.longitude;
 
         if (widget.callback != null) {
           widget.callback!(result);

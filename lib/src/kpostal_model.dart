@@ -1,3 +1,5 @@
+import 'package:geocoding/geocoding.dart';
+
 class Kpostal {
   /// 국가기초구역번호. 2015년 8월 1일부터 시행된 새 우편번호.
   final String postCode;
@@ -74,6 +76,12 @@ class Kpostal {
   /// 검색 결과에서 사용자가 선택한 주소의 언어 타입: K(한글주소), E(영문주소)
   final String userLanguageType;
 
+  /// 위도
+  late double? latitude;
+
+  /// 경도
+  late double? longitude;
+
   Kpostal({
     required this.postCode,
     required this.address,
@@ -100,6 +108,8 @@ class Kpostal {
     required this.query,
     required this.userSelectedType,
     required this.userLanguageType,
+    this.latitude,
+    this.longitude,
   });
 
   factory Kpostal.fromJson(Map json) => Kpostal(
@@ -130,6 +140,11 @@ class Kpostal {
         userLanguageType: json['userLanguageType'] as String,
       );
 
+  @override
+  String toString() {
+    return "($postCode, $address)";
+  }
+
   /// 유저가 화면에서 선택한 주소를 그대로 return합니다.
   String get userSelectedAddress {
     if (this.userSelectedType == 'J') {
@@ -139,4 +154,7 @@ class Kpostal {
     if (this.userLanguageType == 'E') return this.roadAddressEng;
     return this.roadAddress;
   }
+
+  Future<Location> get latLng async =>
+      (await locationFromAddress(roadAddress, localeIdentifier: 'ko-KR')).last;
 }

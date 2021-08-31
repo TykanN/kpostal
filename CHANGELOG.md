@@ -1,3 +1,7 @@
+## 0.3.0
+* provides latitude and logitude
+* update docs
+
 ## 0.2.0
 * add search w/ localhost server
 

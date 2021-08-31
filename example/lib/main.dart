@@ -31,6 +31,8 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   String postCode = '-';
   String address = '-';
+  String latitude = '-';
+  String longitude = '-';
 
   @override
   Widget build(BuildContext context) {
@@ -55,6 +57,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         setState(() {
                           this.postCode = result.postCode;
                           this.address = result.address;
+                          this.latitude = result.latitude.toString();
+                          this.longitude = result.longitude.toString();
                         });
                       },
                     ),
@@ -79,9 +83,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('address',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.address}'),
+                  Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                      'latitude: ${this.latitude} / longitude: ${this.longitude}'),
                 ],
               ),
-            )
+            ),
           ],
         ),
       ),

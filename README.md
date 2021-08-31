@@ -13,7 +13,9 @@ This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that i
 By default, it uses the Address Search page hosted on Github.   
 It's the easiest way to use it.
 
-To respond to errors that arise from hosting problems, we also support hosting local server.
+To respond to errors that arise from hosting problems, it also supports hosting local server.
+
+Kpostal also provides latitude, longitude of the address. It uses the free Geocoding services provided by the iOS and Android platforms. This means that there are restrictions to their use. More information can be found in the [Apple documentation for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder) and the [Google documentation for Android](https://developer.android.com/reference/android/location/Geocoder) and the [geocoding](https://pub.dev/packages/geocoding) plugin.
 
 Support Null-Safety!
 
