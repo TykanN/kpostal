@@ -76,11 +76,17 @@ class Kpostal {
   /// 검색 결과에서 사용자가 선택한 주소의 언어 타입: K(한글주소), E(영문주소)
   final String userLanguageType;
 
-  /// 위도
+  /// 위도(플랫폼 geocoding)
   late double? latitude;
 
-  /// 경도
+  /// 경도(플랫폼 geocoding)
   late double? longitude;
+
+  /// 위도(카카오 geocoding)
+  final double? kakaoLatitude;
+
+  /// 경도(카카오 geocoding)
+  final double? kakaoLongitude;
 
   Kpostal({
     required this.postCode,
@@ -110,6 +116,8 @@ class Kpostal {
     required this.userLanguageType,
     this.latitude,
     this.longitude,
+    this.kakaoLatitude,
+    this.kakaoLongitude,
   });
 
   factory Kpostal.fromJson(Map json) => Kpostal(
@@ -138,11 +146,13 @@ class Kpostal {
         query: json['query'] as String,
         userSelectedType: json['userSelectedType'] as String,
         userLanguageType: json['userLanguageType'] as String,
+        kakaoLatitude: double.tryParse(json['kakaoLat'] ?? ''),
+        kakaoLongitude: double.tryParse(json['kakaoLng'] ?? ''),
       );
 
   @override
   String toString() {
-    return "($postCode, $address)";
+    return "우편번호: $postCode, 주소: $address, 경위도: N$latitude° E$longitude°";
   }
 
   /// 유저가 화면에서 선택한 주소를 그대로 return합니다.
@@ -156,5 +166,5 @@ class Kpostal {
   }
 
   Future<Location> get latLng async =>
-      (await locationFromAddress(roadAddress, localeIdentifier: 'ko-KR')).last;
+      (await locationFromAddress(addressEng, localeIdentifier: 'ko-KR')).last;
 }

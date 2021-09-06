@@ -1,3 +1,8 @@
+## 0.3.1
+* fix platform geocoding returns wrong coordinates.
+* add kakao geocoding(optional)
+* update docs
+
 ## 0.3.0
 * provides latitude and logitude
 * update docs

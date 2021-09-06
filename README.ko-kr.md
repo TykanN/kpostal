@@ -65,6 +65,15 @@ info.plist 파일에 `NSAppTransportSecurity`를 추가해주세요.
 </plist>
 ```
 
+### 🧩 카카오 지오코딩 사용(*선택사항)
+1. [Kakao Developer Site](https://developers.kakao.com) 접속
+2. 개발자 등록 및 앱 생성
+3. 웹 플랫폼 추가: 앱 선택 – [플랫폼] – [Web 플랫폼 등록] – 사이트 도메인 등록
+4. 사이트 도메인 등록: [웹] 플랫폼을 선택하고, [사이트 도메인] 을 등록합니다.
+    - 기본 사용 시, `https://tykann.github.io` 등록
+    - 로컬서버 옵션을 사용 시, `http://localhost:{your port, default is 8080}` 등록
+5. 페이지 상단의 [JavaScript 키]를 지도 API의 appkey로 사용합니다.
+
 ## 사용 예시
 
 ```dart
@@ -97,6 +106,7 @@ TextButton(
 KpostalView(
     useLocalServer: true, // 기본값은 false
     localPort: 8080, // 기본값은 8080
+    kakaoKey: '{발급받은 카카오 앱 JS 키}' // 생략 시 기본 플랫폼 지오코딩만 사용
     callback: ...
 )
 ```

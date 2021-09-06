@@ -13,9 +13,10 @@ This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that i
 By default, it uses the Address Search page hosted on Github.   
 It's the easiest way to use it.
 
-To respond to errors that arise from hosting problems, it also supports hosting local server.
+To respond to errors that arise from hosting problems, **it also supports hosting local server.**
 
 Kpostal also provides latitude, longitude of the address. It uses the free Geocoding services provided by the iOS and Android platforms. This means that there are restrictions to their use. More information can be found in the [Apple documentation for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder) and the [Google documentation for Android](https://developer.android.com/reference/android/location/Geocoder) and the [geocoding](https://pub.dev/packages/geocoding) plugin.
+**If you use [kakao maps api](https://apis.map.kakao.com/web/guide/), you can also get a kakao geocoding value.**
 
 Support Null-Safety!
 
@@ -64,6 +65,16 @@ Add `NSAppTransportSecurity` to info.plist file.
 </dict>
 </plist>
 ```
+
+### 🧩 Kakao geocoding(*optional)
+1. Go to [Kakao Developer Site](https://developers.kakao.com)
+2. Register developer and create app
+3. Add Web Platform: Select App – [Platform] – [Web Platform Registration] – Site Domain Registration
+4. Register Site Domain: Select the Web platform, and register Site Domain.
+    - default, use `https://tykann.github.io`
+    - if you use local server, use `http://localhost:{your port, default is 8080}`
+5. Use the JavaScript key at the top of the page as the app key for the map API.
+
 ## Example
 
 ```dart
@@ -96,6 +107,7 @@ TextButton(
 KpostalView(
     useLocalServer: true, // default is false
     localPort: 8080, // default is 8080
+    kakaoKey: '{your kakao developer app\'s JS key}' // if not declared, only use platform's geocoding
     callback: ...
 )
 ```

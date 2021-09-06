@@ -25,9 +25,22 @@
     <div id="full-size"></div>
   </body>
   <script src="http://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <script type="text/javascript">
+  <script>
     // 화면 element
     var element_layer = document.getElementById("full-size");
+    const URLSearch = new URLSearchParams(location.search);
+    var key = URLSearch.get("key");
+    var enableKakao = URLSearch.get("enableKakao");
+
+    if (enableKakao) {
+      var jsUrl =
+        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        key +
+        "&libraries=services";
+      var geocodeJS = document.createElement("script");
+      geocodeJS.src = jsUrl;
+      document.body.appendChild(geocodeJS);
+    }
 
     daum.postcode.load(function () {
       function callbackMessage(message) {
@@ -35,11 +48,26 @@
           onComplete.postMessage(message);
         } catch (err) {}
       }
-
       new daum.Postcode({
         oncomplete: function (data) {
           // JS callback
-          callbackMessage(JSON.stringify(data));
+          if (enableKakao) {
+            kakao.maps.load(function () {
+              var geocoder = new kakao.maps.services.Geocoder();
+              geocoder.addressSearch(data.address, function (result, status) {
+                if (status === daum.maps.services.Status.OK) {
+                  var latlng = result[0];
+                  data.kakaoLng = latlng.x;
+                  data.kakaoLat = latlng.y;
+                  callbackMessage(JSON.stringify(data));
+                } else {
+                  callbackMessage(JSON.stringify(data));
+                }
+              });
+            });
+          } else {
+            callbackMessage(JSON.stringify(data));
+          }
         },
         width: "100%",
         height: "100%",

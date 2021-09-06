@@ -33,6 +33,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String address = '-';
   String latitude = '-';
   String longitude = '-';
+  String kakaoLatitude = '-';
+  String kakaoLongitude = '-';
 
   @override
   Widget build(BuildContext context) {
@@ -53,12 +55,16 @@ class _MyHomePageState extends State<MyHomePage> {
                     builder: (_) => KpostalView(
                       useLocalServer: true,
                       localPort: 1024,
+                      // kakaoKey: '{Add your KAKAO DEVELOPERS JS KEY}',
                       callback: (Kpostal result) {
                         setState(() {
                           this.postCode = result.postCode;
                           this.address = result.address;
                           this.latitude = result.latitude.toString();
                           this.longitude = result.longitude.toString();
+                          this.kakaoLatitude = result.kakaoLatitude.toString();
+                          this.kakaoLongitude =
+                              result.kakaoLongitude.toString();
                         });
                       },
                     ),
@@ -86,6 +92,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text(
                       'latitude: ${this.latitude} / longitude: ${this.longitude}'),
+                  Text('through KAKAO Geocoder',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text(
+                      'latitude: ${this.kakaoLatitude} / longitude: ${this.kakaoLongitude}'),
                 ],
               ),
             ),
