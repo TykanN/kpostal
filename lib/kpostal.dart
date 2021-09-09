@@ -188,10 +188,11 @@ class _KpostalViewState extends State<KpostalView> {
       onMessageReceived: (JavascriptMessage message) async {
         Kpostal result = Kpostal.fromJson(jsonDecode(message.message));
 
-        Location _latLng = await result.latLng;
-        result.latitude = _latLng.latitude;
-        result.longitude = _latLng.longitude;
-
+        Location? _latLng = await result.latLng;
+        if (_latLng != null) {
+          result.latitude = _latLng.latitude;
+          result.longitude = _latLng.longitude;
+        }
         if (widget.callback != null) {
           widget.callback!(result);
         }

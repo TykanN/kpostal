@@ -165,6 +165,14 @@ class Kpostal {
     return this.roadAddress;
   }
 
-  Future<Location> get latLng async =>
-      (await locationFromAddress(addressEng, localeIdentifier: 'ko-KR')).last;
+  Future<Location?> get latLng async {
+    try {
+      Location _latLng =
+          (await locationFromAddress(addressEng, localeIdentifier: 'ko-KR'))
+              .last;
+      return _latLng;
+    } catch (_) {
+      return null;
+    }
+  }
 }
