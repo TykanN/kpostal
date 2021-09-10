@@ -30,7 +30,7 @@
     var element_layer = document.getElementById("full-size");
     const URLSearch = new URLSearchParams(location.search);
     var key = URLSearch.get("key");
-    var enableKakao = URLSearch.get("enableKakao");
+    var enableKakao = JSON.parse(URLSearch.get("enableKakao"));
 
     if (enableKakao) {
       var jsUrl =

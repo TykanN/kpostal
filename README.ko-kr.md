@@ -15,14 +15,15 @@ Kpostal 패키지는 [카카오 우편번호 서비스](https://postcode.map.dau
 
 호스팅 문제로 발생하는 에러에 대응하기 위해, 로컬서버 호스팅도 추가로 지원합니다.   
 
-Kpostal은 해당 주소의 경위도 정보도 제공합니다. iOS 및 Android 플랫폼이 제공하는 무료 지오코딩 서비스를 사용합니다. 이것은 사용에 제한이 있다는 것을 의미합니다. 자세한 내용은 [Apple docs for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder), [Google docs for Android](https://developer.android.com/reference/android/location/Geocoder) 그리고 [geocoding](https://pub.dev/dev/geocoding/geocoding) 플러그인을 참조하십시오.
+Kpostal은 해당 주소의 경위도 정보도 제공합니다. iOS 및 Android 플랫폼이 제공하는 무료 지오코딩 서비스를 사용합니다. 이것은 사용에 제한이 있다는 것을 의미합니다. 자세한 내용은 [Apple docs for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder), [Google docs for Android](https://developer.android.com/reference/android/location/Geocoder) 그리고 [geocoding](https://pub.dev/dev/geocoding/geocoding) 플러그인을 참조하십시오.   
+**[카카오맵 API](https://apis.map.kakao.com/web/guide/)키를 발급받아 사용하시는 경우, 카카오 지오코딩 값도 얻을 수 있습니다.**
 
 Null-Safety를 지원합니다.
 
 <div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
 
 ## 시작하기
-
+ㄴ
 pubspec.yaml 파일에 kpostal을 추가해주세요:
 ```yaml
 dependencies:

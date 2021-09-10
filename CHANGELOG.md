@@ -1,3 +1,7 @@
+## 0.3.2
+* fix "not callback when geocoding value is null"
+* fix protocol error and update html file
+
 ## 0.3.1
 * fix platform geocoding returns wrong coordinates.
 * add kakao geocoding(optional)
