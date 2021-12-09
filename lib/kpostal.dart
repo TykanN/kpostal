@@ -4,10 +4,9 @@ export 'src/kpostal_model.dart';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart' as ia;
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/kpostal_model.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class KpostalView extends StatefulWidget {
   static const String routeName = '/kpostal';
@@ -89,13 +88,9 @@ class KpostalView extends StatefulWidget {
 }
 
 class _KpostalViewState extends State<KpostalView> {
-  late WebViewController _controller;
-  WebViewController get controller => _controller;
-  bool initLoadComplete = false;
+  InAppLocalhostServer? _localhost;
 
-  late ia.InAppWebViewController _inAppController;
-  ia.InAppWebViewController get inAppController => _inAppController;
-  ia.InAppLocalhostServer? _localhost;
+  bool initLoadComplete = false;
   bool isLocalhostOn = false;
 
   @override
@@ -109,7 +104,7 @@ class _KpostalViewState extends State<KpostalView> {
   void initState() {
     super.initState();
     if (widget.useLocalServer) {
-      _localhost = ia.InAppLocalhostServer(port: widget.localPort);
+      _localhost = InAppLocalhostServer(port: widget.localPort);
       _localhost!.start().then((_) {
         setState(() {
           isLocalhostOn = true;
@@ -168,35 +163,56 @@ class _KpostalViewState extends State<KpostalView> {
     if (widget.useLocalServer && !this.isLocalhostOn) {
       return Center(child: CircularProgressIndicator());
     }
-    return WebView(
-        initialUrl: _initialUrl + _queryParams,
-        javascriptMode: JavascriptMode.unrestricted,
-        javascriptChannels: <JavascriptChannel>[_channel].toSet(),
-        onPageFinished: (_) async {
-          setState(() {
-            initLoadComplete = true;
-          });
-        },
-        onWebViewCreated: (WebViewController webViewController) async {
-          this._controller = webViewController;
+
+    return InAppWebView(
+      initialOptions: InAppWebViewGroupOptions(
+        crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
+        android: AndroidInAppWebViewOptions(useHybridComposition: true),
+      ),
+      onWebViewCreated: (controller) async {
+        // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
+        await controller.addWebMessageListener(
+          WebMessageListener(
+            jsObjectName: "onComplete",
+            allowedOriginRules: Set.from(["*"]),
+            onPostMessage:
+                (message, sourceOrigin, isMainFrame, replyProxy) async {
+              try {
+                if (message != null) {
+                  Kpostal result = Kpostal.fromJson(jsonDecode(message));
+
+                  Location? _latLng = await result.latLng;
+                  if (_latLng != null) {
+                    result.latitude = _latLng.latitude;
+                    result.longitude = _latLng.longitude;
+                  }
+                  if (widget.callback != null) {
+                    widget.callback!(result);
+                  }
+
+                  Navigator.pop(context, result);
+                } else {
+                  throw 'fail to load message : message is null';
+                }
+              } catch (e) {
+                Navigator.pop(context);
+              }
+            },
+          ),
+        );
+
+        await controller.loadUrl(
+          urlRequest: URLRequest(
+            url: Uri.parse(_initialUrl + _queryParams),
+            headers: {},
+          ),
+        );
+      },
+      onLoadStop: (_, __) {
+        setState(() {
+          initLoadComplete = true;
         });
+      },
+    );
   }
-
-  // 자바스크립트 채널
-  JavascriptChannel get _channel => JavascriptChannel(
-      name: 'onComplete',
-      onMessageReceived: (JavascriptMessage message) async {
-        Kpostal result = Kpostal.fromJson(jsonDecode(message.message));
-
-        Location? _latLng = await result.latLng;
-        if (_latLng != null) {
-          result.latitude = _latLng.latitude;
-          result.longitude = _latLng.longitude;
-        }
-        if (widget.callback != null) {
-          widget.callback!(result);
-        }
-
-        Navigator.pop(context, result);
-      });
 }

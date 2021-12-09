@@ -1,3 +1,7 @@
+## 0.4.0
+* remove "webview_flutter" from dependencies.
+  all components related to Webview(local hosting, javascript message, view page...) are integrated using "flutter_inappwebview" package.
+
 ## 0.3.2
 * fix "not callback when geocoding value is null"
 * fix protocol error and update html file
