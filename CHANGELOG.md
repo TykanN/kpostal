@@ -1,3 +1,6 @@
+## 0.4.1
+* add "bname1" parameter.
+
 ## 0.4.0
 * remove "webview_flutter" from dependencies.
   all components related to Webview(local hosting, javascript message, view page...) are integrated using "flutter_inappwebview" package.
