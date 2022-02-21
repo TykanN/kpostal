@@ -67,6 +67,9 @@ class Kpostal {
   /// 영문 법정동/법정리 이름
   final String bnameEng;
 
+  /// 법정리의 읍/면 이름
+  final String bname1;
+
   /// 사용자가 입력한 검색어
   final String query;
 
@@ -114,6 +117,7 @@ class Kpostal {
     required this.query,
     required this.userSelectedType,
     required this.userLanguageType,
+    required this.bname1,
     this.latitude,
     this.longitude,
     this.kakaoLatitude,
@@ -142,6 +146,7 @@ class Kpostal {
         roadnameEng: json['roadnameEnglish'] as String,
         bcode: json['bcode'] as String,
         bname: json['bname'] as String,
+        bname1: json['bname1'] as String,
         bnameEng: json['bnameEnglish'] as String,
         query: json['query'] as String,
         userSelectedType: json['userSelectedType'] as String,
