@@ -1,3 +1,6 @@
+## 0.4.2
+* fix a bug below Android 10.
+
 ## 0.4.1
 * add "bname1" parameter.
 

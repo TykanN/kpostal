@@ -173,16 +173,18 @@ class _KpostalViewState extends State<KpostalView> {
       onWebViewCreated: (controller) async {
         // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
         // WEB_MESSAGE_LISTENER 지원 여부 확인
-        if (!Platform.isAndroid || await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
+        if (!Platform.isAndroid ||
+            await AndroidWebViewFeature.isFeatureSupported(
+                AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
           await controller.addWebMessageListener(
             WebMessageListener(
               jsObjectName: "onComplete",
               allowedOriginRules: Set.from(["*"]),
-              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) => handleMessage(message),
+              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
+                  handleMessage(message),
             ),
           );
-        }
-        else {
+        } else {
           controller.addJavaScriptHandler(
             handlerName: 'onComplete',
             callback: (args) => handleMessage(args[0]),
