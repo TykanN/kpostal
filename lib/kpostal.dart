@@ -3,6 +3,7 @@ library kpostal;
 export 'src/kpostal_model.dart';
 
 import 'dart:convert';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geocoding/geocoding.dart';
@@ -171,35 +172,22 @@ class _KpostalViewState extends State<KpostalView> {
       ),
       onWebViewCreated: (controller) async {
         // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
-        await controller.addWebMessageListener(
-          WebMessageListener(
-            jsObjectName: "onComplete",
-            allowedOriginRules: Set.from(["*"]),
-            onPostMessage:
-                (message, sourceOrigin, isMainFrame, replyProxy) async {
-              try {
-                if (message != null) {
-                  Kpostal result = Kpostal.fromJson(jsonDecode(message));
-
-                  Location? _latLng = await result.latLng;
-                  if (_latLng != null) {
-                    result.latitude = _latLng.latitude;
-                    result.longitude = _latLng.longitude;
-                  }
-                  if (widget.callback != null) {
-                    widget.callback!(result);
-                  }
-
-                  Navigator.pop(context, result);
-                } else {
-                  throw 'fail to load message : message is null';
-                }
-              } catch (e) {
-                Navigator.pop(context);
-              }
-            },
-          ),
-        );
+        // WEB_MESSAGE_LISTENER 지원 여부 확인
+        if (!Platform.isAndroid || await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
+          await controller.addWebMessageListener(
+            WebMessageListener(
+              jsObjectName: "onComplete",
+              allowedOriginRules: Set.from(["*"]),
+              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) => handleMessage(message),
+            ),
+          );
+        }
+        else {
+          controller.addJavaScriptHandler(
+            handlerName: 'onComplete',
+            callback: (args) => handleMessage(args[0]),
+          );
+        }
 
         await controller.loadUrl(
           urlRequest: URLRequest(
@@ -214,5 +202,28 @@ class _KpostalViewState extends State<KpostalView> {
         });
       },
     );
+  }
+
+  handleMessage(String? message) async {
+    try {
+      if (message != null) {
+        Kpostal result = Kpostal.fromJson(jsonDecode(message));
+
+        Location? _latLng = await result.latLng;
+        if (_latLng != null) {
+          result.latitude = _latLng.latitude;
+          result.longitude = _latLng.longitude;
+        }
+        if (widget.callback != null) {
+          widget.callback!(result);
+        }
+
+        Navigator.pop(context, result);
+      } else {
+        throw 'fail to load message : message is null';
+      }
+    } catch (e) {
+      Navigator.pop(context);
+    }
   }
 }
