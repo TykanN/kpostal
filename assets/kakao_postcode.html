@@ -46,7 +46,9 @@
       function callbackMessage(message) {
         try {
           onComplete.postMessage(message);
-        } catch (err) {}
+        } catch (err) {
+          window.flutter_inappwebview.callHandler('onComplete', message);
+        }
       }
       new daum.Postcode({
         oncomplete: function (data) {
