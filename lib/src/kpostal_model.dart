@@ -172,9 +172,7 @@ class Kpostal {
 
   Future<Location?> get latLng async {
     try {
-      Location _latLng =
-          (await locationFromAddress(addressEng, localeIdentifier: 'ko-KR'))
-              .last;
+      Location _latLng = (await locationFromAddress(addressEng, localeIdentifier: 'ko_KR')).last;
       return _latLng;
     } catch (_) {
       return null;
