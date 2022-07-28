@@ -155,7 +155,8 @@ class Kpostal {
         userSelectedType: json[KpostalConst.userSelectedType] as String,
         userLanguageType: json[KpostalConst.userLanguageType] as String,
         kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
-        kakaoLongitude: double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
+        kakaoLongitude:
+            double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
       );
 
   @override
@@ -175,7 +176,8 @@ class Kpostal {
 
   Future<List<Location>> searchLocation(String address) async {
     try {
-      final List<Location> result = await locationFromAddress(address, localeIdentifier: KpostalConst.localeKo);
+      final List<Location> result = await locationFromAddress(address,
+          localeIdentifier: KpostalConst.localeKo);
       log('LatLng Found from "$address"', name: KpostalConst.packageName);
       return result;
     }
@@ -197,7 +199,8 @@ class Kpostal {
       final List<Location> fromAddress = await searchLocation(address);
       return fromAddress.last;
     } on StateError {
-      log('Location is not found from geocoding', name: KpostalConst.packageName);
+      log('Location is not found from geocoding',
+          name: KpostalConst.packageName);
       return null;
     }
   }
