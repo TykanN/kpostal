@@ -1,4 +1,7 @@
+import 'dart:developer';
+
 import 'package:geocoding/geocoding.dart';
+import 'package:kpostal/src/constant.dart';
 
 class Kpostal {
   /// 국가기초구역번호. 2015년 8월 1일부터 시행된 새 우편번호.
@@ -125,34 +128,34 @@ class Kpostal {
   });
 
   factory Kpostal.fromJson(Map json) => Kpostal(
-        postCode: json['zonecode'] as String,
-        address: json['address'] as String,
-        addressEng: json['addressEnglish'] as String,
-        roadAddress: json['roadAddress'] as String,
-        roadAddressEng: json['roadAddressEnglish'] as String,
-        jibunAddress: json['jibunAddress'] as String,
-        jibunAddressEng: json['jibunAddressEnglish'] as String,
-        buildingCode: json['buildingCode'] as String,
-        buildingName: json['buildingName'] as String,
-        apartment: json['apartment'] as String,
-        addressType: json['addressType'] as String,
-        sido: json['sido'] as String,
-        sidoEng: json['sidoEnglish'] as String,
-        sigungu: json['sigungu'] as String,
-        sigunguEng: json['sigunguEnglish'] as String,
-        sigunguCode: json['sigunguCode'] as String,
-        roadnameCode: json['roadnameCode'] as String,
-        roadname: json['roadname'] as String,
-        roadnameEng: json['roadnameEnglish'] as String,
-        bcode: json['bcode'] as String,
-        bname: json['bname'] as String,
-        bname1: json['bname1'] as String,
-        bnameEng: json['bnameEnglish'] as String,
-        query: json['query'] as String,
-        userSelectedType: json['userSelectedType'] as String,
-        userLanguageType: json['userLanguageType'] as String,
-        kakaoLatitude: double.tryParse(json['kakaoLat'] ?? ''),
-        kakaoLongitude: double.tryParse(json['kakaoLng'] ?? ''),
+        postCode: json[KpostalConst.postCode] as String,
+        address: json[KpostalConst.address] as String,
+        addressEng: json[KpostalConst.addressEng] as String,
+        roadAddress: json[KpostalConst.roadAddress] as String,
+        roadAddressEng: json[KpostalConst.roadAddressEng] as String,
+        jibunAddress: json[KpostalConst.jibunAddress] as String,
+        jibunAddressEng: json[KpostalConst.jibunAddressEng] as String,
+        buildingCode: json[KpostalConst.buildingCode] as String,
+        buildingName: json[KpostalConst.buildingName] as String,
+        apartment: json[KpostalConst.apartment] as String,
+        addressType: json[KpostalConst.addressType] as String,
+        sido: json[KpostalConst.sido] as String,
+        sidoEng: json[KpostalConst.sidoEng] as String,
+        sigungu: json[KpostalConst.sigungu] as String,
+        sigunguEng: json[KpostalConst.sigunguEng] as String,
+        sigunguCode: json[KpostalConst.sigunguCode] as String,
+        roadnameCode: json[KpostalConst.roadnameCode] as String,
+        roadname: json[KpostalConst.roadname] as String,
+        roadnameEng: json[KpostalConst.roadnameEng] as String,
+        bcode: json[KpostalConst.bcode] as String,
+        bname: json[KpostalConst.bname] as String,
+        bname1: json[KpostalConst.bname1] as String,
+        bnameEng: json[KpostalConst.bnameEng] as String,
+        query: json[KpostalConst.query] as String,
+        userSelectedType: json[KpostalConst.userSelectedType] as String,
+        userLanguageType: json[KpostalConst.userLanguageType] as String,
+        kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
+        kakaoLongitude: double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
       );
 
   @override
@@ -170,11 +173,31 @@ class Kpostal {
     return this.roadAddress;
   }
 
+  Future<List<Location>> searchLocation(String address) async {
+    try {
+      final List<Location> result = await locationFromAddress(address, localeIdentifier: KpostalConst.localeKo);
+      log('LatLng Found from "$address"', name: KpostalConst.packageName);
+      return result;
+    }
+    // 경위도 조회 결과가 없는 경우
+    on NoResultFoundException {
+      log('LatLng NotFound from "$address"', name: KpostalConst.packageName);
+      return <Location>[];
+    } catch (_) {
+      return <Location>[];
+    }
+  }
+
   Future<Location?> get latLng async {
     try {
-      Location _latLng = (await locationFromAddress(addressEng, localeIdentifier: 'ko_KR')).last;
-      return _latLng;
-    } catch (_) {
+      final List<Location> fromEngAddress = await searchLocation(addressEng);
+      if (fromEngAddress.isNotEmpty) {
+        return fromEngAddress.last;
+      }
+      final List<Location> fromAddress = await searchLocation(address);
+      return fromAddress.last;
+    } on StateError {
+      log('Location is not found from geocoding', name: KpostalConst.packageName);
       return null;
     }
   }

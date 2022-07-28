@@ -1,6 +1,7 @@
 library kpostal;
 
 export 'src/kpostal_model.dart';
+export 'src/constant.dart';
 
 import 'dart:convert';
 import 'dart:io';
@@ -143,10 +144,7 @@ class _KpostalViewState extends State<KpostalView> {
                   width: double.infinity,
                   height: double.infinity,
                   color: Colors.white,
-                  child: Center(
-                      child: widget.onLoading ??
-                          CircularProgressIndicator(
-                              color: widget.loadingColor)),
+                  child: Center(child: widget.onLoading ?? CircularProgressIndicator(color: widget.loadingColor)),
                 ),
         ],
       ),
@@ -158,8 +156,7 @@ class _KpostalViewState extends State<KpostalView> {
         ? 'http://localhost:${widget.localPort}/packages/kpostal/assets/kakao_postcode_localhost.html'
         : 'https://tykann.github.io/kpostal/assets/kakao_postcode.html';
 
-    String _queryParams =
-        '?key=${widget.kakaoKey}&enableKakao=${widget.useKakaoGeocoder}';
+    String _queryParams = '?key=${widget.kakaoKey}&enableKakao=${widget.useKakaoGeocoder}';
 
     if (widget.useLocalServer && !this.isLocalhostOn) {
       return Center(child: CircularProgressIndicator());
@@ -174,14 +171,12 @@ class _KpostalViewState extends State<KpostalView> {
         // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
         // WEB_MESSAGE_LISTENER 지원 여부 확인
         if (!Platform.isAndroid ||
-            await AndroidWebViewFeature.isFeatureSupported(
-                AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
+            await AndroidWebViewFeature.isFeatureSupported(AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
           await controller.addWebMessageListener(
             WebMessageListener(
               jsObjectName: "onComplete",
               allowedOriginRules: Set.from(["*"]),
-              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
-                  handleMessage(message),
+              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) => handleMessage(message),
             ),
           );
         } else {
@@ -212,6 +207,7 @@ class _KpostalViewState extends State<KpostalView> {
         Kpostal result = Kpostal.fromJson(jsonDecode(message));
 
         Location? _latLng = await result.latLng;
+
         if (_latLng != null) {
           result.latitude = _latLng.latitude;
           result.longitude = _latLng.longitude;

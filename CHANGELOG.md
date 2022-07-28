@@ -1,3 +1,10 @@
+## 0.5.0
+* remove pubspec.lock from git.
+* update dependencies.
+* improve method for searching latitude and logitude through geocoding.
+  if not found by eng address, retry using kor address.
+* log info.
+
 ## 0.4.2
 * fix a bug below Android 10.
 
