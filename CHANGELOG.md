@@ -1,3 +1,6 @@
+## 0.5.1
+* fix #12 issue : show representative jibunAddress
+
 ## 0.5.0
 * remove pubspec.lock from git.
 * update dependencies.

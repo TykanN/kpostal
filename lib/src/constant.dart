@@ -13,6 +13,8 @@ class KpostalConst {
   static const String roadAddressEng = 'roadAddressEnglish';
   static const String jibunAddress = 'jibunAddress';
   static const String jibunAddressEng = 'jibunAddressEnglish';
+  static const String autoJibunAddress = 'autoJibunAddress';
+  static const String autoJibunAddressEng = 'autoJibunAddressEnglish';
   static const String buildingCode = 'buildingCode';
   static const String buildingName = 'buildingName';
   static const String apartment = 'apartment';

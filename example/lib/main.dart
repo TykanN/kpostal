@@ -30,7 +30,8 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   String postCode = '-';
-  String address = '-';
+  String roadAddress = '-';
+  String jibunAddress = '-';
   String latitude = '-';
   String longitude = '-';
   String kakaoLatitude = '-';
@@ -59,7 +60,8 @@ class _MyHomePageState extends State<MyHomePage> {
                       callback: (Kpostal result) {
                         setState(() {
                           this.postCode = result.postCode;
-                          this.address = result.address;
+                          this.roadAddress = result.address;
+                          this.jibunAddress = result.jibunAddress;
                           this.latitude = result.latitude.toString();
                           this.longitude = result.longitude.toString();
                           this.kakaoLatitude = result.kakaoLatitude.toString();
@@ -86,9 +88,12 @@ class _MyHomePageState extends State<MyHomePage> {
                   Text('postCode',
                       style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.postCode}'),
-                  Text('address',
+                  Text('road_address',
                       style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.address}'),
+                  Text('result: ${this.roadAddress}'),
+                  Text('jibun_address',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: ${this.jibunAddress}'),
                   Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text(
                       'latitude: ${this.latitude} / longitude: ${this.longitude}'),

@@ -133,8 +133,13 @@ class Kpostal {
         addressEng: json[KpostalConst.addressEng] as String,
         roadAddress: json[KpostalConst.roadAddress] as String,
         roadAddressEng: json[KpostalConst.roadAddressEng] as String,
-        jibunAddress: json[KpostalConst.jibunAddress] as String,
-        jibunAddressEng: json[KpostalConst.jibunAddressEng] as String,
+        jibunAddress: (json[KpostalConst.jibunAddress] as String).isNotEmpty
+            ? json[KpostalConst.jibunAddress] as String
+            : json[KpostalConst.autoJibunAddress] as String,
+        jibunAddressEng:
+            (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
+                ? json[KpostalConst.jibunAddressEng] as String
+                : json[KpostalConst.autoJibunAddressEng] as String,
         buildingCode: json[KpostalConst.buildingCode] as String,
         buildingName: json[KpostalConst.buildingName] as String,
         apartment: json[KpostalConst.apartment] as String,
