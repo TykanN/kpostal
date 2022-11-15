@@ -1,5 +1,5 @@
 [![pub package](https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue)](https://pub.dev/packages/kpostal)
-[![likes](https://badges.bar/kpostal/likes)](https://pub.dev/packages/kpostal/score)
+[![Pub Likes](https://img.shields.io/pub/likes/kpostal)](https://pub.dev/packages/kpostal/score)
 
 [![English](https://img.shields.io/badge/Language-English-9cf?style=for-the-badge)](README.md)
 [![Korean](https://img.shields.io/badge/Language-Korean-9cf?style=for-the-badge)](README.ko-kr.md)

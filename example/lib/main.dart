@@ -65,17 +65,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           this.latitude = result.latitude.toString();
                           this.longitude = result.longitude.toString();
                           this.kakaoLatitude = result.kakaoLatitude.toString();
-                          this.kakaoLongitude =
-                              result.kakaoLongitude.toString();
+                          this.kakaoLongitude = result.kakaoLongitude.toString();
                         });
                       },
                     ),
                   ),
                 );
               },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue)),
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
               child: Text(
                 'Search Address',
                 style: TextStyle(color: Colors.white),
@@ -85,22 +82,16 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  Text('postCode',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('postCode', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.postCode}'),
-                  Text('road_address',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('road_address', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.roadAddress}'),
-                  Text('jibun_address',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('jibun_address', style: TextStyle(fontWeight: FontWeight.bold)),
                   Text('result: ${this.jibunAddress}'),
                   Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.latitude} / longitude: ${this.longitude}'),
-                  Text('through KAKAO Geocoder',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.kakaoLatitude} / longitude: ${this.kakaoLongitude}'),
+                  Text('latitude: ${this.latitude} / longitude: ${this.longitude}'),
+                  Text('through KAKAO Geocoder', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('latitude: ${this.kakaoLatitude} / longitude: ${this.kakaoLongitude}'),
                 ],
               ),
             ),
