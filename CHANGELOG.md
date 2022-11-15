@@ -1,3 +1,11 @@
+## 1.0.0-dev.1
+* flutter_inappwebview update `6.x.x` version
+* fix typo
+### BREAKING CHANGES
+* Flutter minimum version `3.0.0`
+* Updated Android `minSdkVersion` to `19`
+* the minimum iOS version to be `9.0`(ios/Podfile) with `XCode version >= 14`
+  
 ## 0.5.1
 * fix #12 issue : show representative jibunAddress
 

@@ -145,8 +145,7 @@ class _KpostalViewState extends State<KpostalView> {
                   height: double.infinity,
                   color: Colors.white,
                   child: Center(
-                    child: widget.onLoading ??
-                        CircularProgressIndicator(color: widget.loadingColor),
+                    child: widget.onLoading ?? CircularProgressIndicator(color: widget.loadingColor),
                   ),
                 ),
         ],
@@ -159,30 +158,26 @@ class _KpostalViewState extends State<KpostalView> {
         ? 'http://localhost:${widget.localPort}/packages/kpostal/assets/kakao_postcode_localhost.html'
         : 'https://tykann.github.io/kpostal/assets/kakao_postcode.html';
 
-    String _queryParams =
-        '?key=${widget.kakaoKey}&enableKakao=${widget.useKakaoGeocoder}';
+    String _queryParams = '?key=${widget.kakaoKey}&enableKakao=${widget.useKakaoGeocoder}';
 
     if (widget.useLocalServer && !this.isLocalhostOn) {
       return Center(child: CircularProgressIndicator());
     }
 
     return InAppWebView(
-      initialOptions: InAppWebViewGroupOptions(
-        crossPlatform: InAppWebViewOptions(javaScriptEnabled: true),
-        android: AndroidInAppWebViewOptions(useHybridComposition: true),
+      initialSettings: InAppWebViewSettings(
+        useHybridComposition: true,
+        javaScriptEnabled: true,
       ),
       onWebViewCreated: (controller) async {
         // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
         // WEB_MESSAGE_LISTENER 지원 여부 확인
-        if (!Platform.isAndroid ||
-            await AndroidWebViewFeature.isFeatureSupported(
-                AndroidWebViewFeature.WEB_MESSAGE_LISTENER)) {
+        if (!Platform.isAndroid || await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
           await controller.addWebMessageListener(
             WebMessageListener(
               jsObjectName: "onComplete",
               allowedOriginRules: Set.from(["*"]),
-              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
-                  handleMessage(message),
+              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) => handleMessage(message),
             ),
           );
         } else {
@@ -194,7 +189,7 @@ class _KpostalViewState extends State<KpostalView> {
 
         await controller.loadUrl(
           urlRequest: URLRequest(
-            url: Uri.parse(_initialUrl + _queryParams),
+            url: WebUri(_initialUrl + _queryParams),
             headers: {},
           ),
         );
