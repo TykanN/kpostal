@@ -31,7 +31,7 @@ class KpostalView extends StatefulWidget {
   /// this callback function is called when user selects addresss.
   ///
   /// 유저가 주소를 선택했을 때 호출됩니다.
-  final Function(Kpostal result)? callback;
+  final void Function(Kpostal result)? callback;
 
   /// build custom AppBar.
   ///
@@ -69,7 +69,7 @@ class KpostalView extends StatefulWidget {
   final String kakaoKey;
 
   KpostalView({
-    Key? key,
+    super.key,
     this.title = '주소검색',
     this.appBarColor = Colors.white,
     this.titleColor = Colors.black,
@@ -82,15 +82,17 @@ class KpostalView extends StatefulWidget {
     this.kakaoKey = '',
   })  : assert(1024 <= localPort && localPort <= 49151,
             'localPort is out of range. It should be from 1024 to 49151(Range of Registered Port)'),
-        useKakaoGeocoder = (kakaoKey != ''),
-        super(key: key);
+        useKakaoGeocoder = kakaoKey.isNotEmpty;
 
   @override
   _KpostalViewState createState() => _KpostalViewState();
 }
 
 class _KpostalViewState extends State<KpostalView> {
-  InAppLocalhostServer? _localhost;
+  late final InAppLocalhostServer _localhost =
+      InAppLocalhostServer(port: widget.localPort);
+
+  late final Uri targetUri;
 
   bool initLoadComplete = false;
   bool isLocalhostOn = false;
@@ -106,18 +108,32 @@ class _KpostalViewState extends State<KpostalView> {
   void initState() {
     super.initState();
     if (widget.useLocalServer) {
-      _localhost = InAppLocalhostServer(port: widget.localPort);
-      _localhost!.start().then((_) {
+      _localhost.start().then((_) {
         setState(() {
           isLocalhostOn = true;
         });
       });
     }
+
+    final Map<String, String> _queryParams = {
+      'enableKakao': '${widget.useKakaoGeocoder}'
+    };
+    if (widget.useKakaoGeocoder) {
+      _queryParams.addAll({'key': widget.kakaoKey});
+    }
+
+    targetUri = widget.useLocalServer
+        ? Uri.http(
+            'localhost:${widget.localPort}',
+            '/packages/kpostal/assets/kakao_postcode_localhost.html',
+            _queryParams)
+        : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html',
+            _queryParams);
   }
 
   @override
   void dispose() {
-    if (widget.useLocalServer) _localhost?.close();
+    if (widget.useLocalServer) _localhost.close();
     super.dispose();
   }
 
@@ -133,11 +149,60 @@ class _KpostalViewState extends State<KpostalView> {
                 color: widget.titleColor,
               ),
             ),
-            iconTheme: IconThemeData().copyWith(color: widget.titleColor),
+            iconTheme:
+                Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
           ),
       body: Stack(
         children: [
-          _buildWebView(),
+          Builder(
+            builder: (BuildContext context) {
+              if (widget.useLocalServer && !isLocalhostOn) {
+                return Center(
+                  child: CircularProgressIndicator(),
+                );
+              }
+
+              return InAppWebView(
+                initialSettings: InAppWebViewSettings(
+                  useHybridComposition: true,
+                  javaScriptEnabled: true,
+                ),
+                onWebViewCreated: (controller) async {
+                  // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
+                  // WEB_MESSAGE_LISTENER 지원 여부 확인
+                  if (!Platform.isAndroid ||
+                      await WebViewFeature.isFeatureSupported(
+                          WebViewFeature.WEB_MESSAGE_LISTENER)) {
+                    await controller.addWebMessageListener(
+                      WebMessageListener(
+                        jsObjectName: "onComplete",
+                        allowedOriginRules: Set.from(["*"]),
+                        onPostMessage:
+                            (message, sourceOrigin, isMainFrame, replyProxy) =>
+                                handleMessage(message),
+                      ),
+                    );
+                  } else {
+                    controller.addJavaScriptHandler(
+                      handlerName: 'onComplete',
+                      callback: (args) => handleMessage(args[0]),
+                    );
+                  }
+
+                  await controller.loadUrl(
+                    urlRequest: URLRequest(
+                      url: WebUri.uri(targetUri),
+                    ),
+                  );
+                },
+                onLoadStop: (_, __) {
+                  setState(() {
+                    initLoadComplete = true;
+                  });
+                },
+              );
+            },
+          ),
           initLoadComplete
               ? const SizedBox.shrink()
               : Container(
@@ -154,60 +219,7 @@ class _KpostalViewState extends State<KpostalView> {
     );
   }
 
-  Widget _buildWebView() {
-    String _initialUrl = widget.useLocalServer
-        ? 'http://localhost:${widget.localPort}/packages/kpostal/assets/kakao_postcode_localhost.html'
-        : 'https://tykann.github.io/kpostal/assets/kakao_postcode.html';
-
-    String _queryParams =
-        '?key=${widget.kakaoKey}&enableKakao=${widget.useKakaoGeocoder}';
-
-    if (widget.useLocalServer && !this.isLocalhostOn) {
-      return Center(child: CircularProgressIndicator());
-    }
-
-    return InAppWebView(
-      initialSettings: InAppWebViewSettings(
-        useHybridComposition: true,
-        javaScriptEnabled: true,
-      ),
-      onWebViewCreated: (controller) async {
-        // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
-        // WEB_MESSAGE_LISTENER 지원 여부 확인
-        if (!Platform.isAndroid ||
-            await WebViewFeature.isFeatureSupported(
-                WebViewFeature.WEB_MESSAGE_LISTENER)) {
-          await controller.addWebMessageListener(
-            WebMessageListener(
-              jsObjectName: "onComplete",
-              allowedOriginRules: Set.from(["*"]),
-              onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
-                  handleMessage(message),
-            ),
-          );
-        } else {
-          controller.addJavaScriptHandler(
-            handlerName: 'onComplete',
-            callback: (args) => handleMessage(args[0]),
-          );
-        }
-
-        await controller.loadUrl(
-          urlRequest: URLRequest(
-            url: WebUri(_initialUrl + _queryParams),
-            headers: {},
-          ),
-        );
-      },
-      onLoadStop: (_, __) {
-        setState(() {
-          initLoadComplete = true;
-        });
-      },
-    );
-  }
-
-  handleMessage(String? message) async {
+  void handleMessage(String? message) async {
     try {
       if (message != null) {
         Kpostal result = Kpostal.fromJson(jsonDecode(message));
@@ -218,16 +230,13 @@ class _KpostalViewState extends State<KpostalView> {
           result.latitude = _latLng.latitude;
           result.longitude = _latLng.longitude;
         }
-        if (widget.callback != null) {
-          widget.callback!(result);
-        }
-
-        Navigator.pop(context, result);
+        widget.callback?.call(result);
+        Navigator.of(context).pop(result);
       } else {
         throw 'fail to load message : message is null';
       }
     } catch (e) {
-      Navigator.pop(context);
+      Navigator.of(context).pop(context);
     }
   }
 }

@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key, required this.title}) : super(key: key);
+  MyHomePage({super.key, required this.title});
 
   final String title;
 
@@ -50,8 +50,7 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             TextButton(
               onPressed: () async {
-                await Navigator.push(
-                  context,
+                await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => KpostalView(
                       useLocalServer: true,
