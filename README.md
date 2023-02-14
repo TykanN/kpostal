@@ -33,6 +33,7 @@ dependencies:
 ## Setup
 
 **🧑🏻‍💻 Neither iOS nor Android requires any action when using default hosting.**
+
 **[Android] Check internet permission setting on release mode!**
 ```xml
 // AndroidManifest.xml
