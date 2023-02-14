@@ -33,8 +33,13 @@ dependencies:
 ## Setup
 
 **🧑🏻‍💻 Neither iOS nor Android requires any action when using default hosting.**
+**[Android] Check internet permission setting on release mode!**
+```xml
+// AndroidManifest.xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 
-### ❗ Use local server
+### ❗ Use local server (Optional)
 If you use the [useLocalServer] option to host a local server, you should make the platform specific settings required for http communication.
 ### Android
 Add `android:usesClearextTraffic="true"` to <application> in AndroidManifest.xml file.

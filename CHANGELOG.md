@@ -1,6 +1,7 @@
 ## 1.0.0-dev.2
 ### BREAKING CHANGES
 * Dart SDK version `>=2.17.0`
+* Update docs and example
 
 ## 1.0.0-dev.1
 * flutter_inappwebview update `6.x.x` version
