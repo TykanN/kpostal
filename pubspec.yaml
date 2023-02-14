@@ -10,7 +10,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flutter_inappwebview: ^6.0.0-beta.12
+  flutter_inappwebview: ^6.0.0-beta.22
   geocoding: ^2.0.5
 
 dev_dependencies:

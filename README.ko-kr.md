@@ -32,9 +32,14 @@ dependencies:
 
 ## 플랫폼별 설정
 
-**🧑🏻‍💻 기본 제공하는 웹호스팅 사용 시 iOS, Android 모두 아무런 작업이 필요없습니다.**
+**🧑🏻‍💻 기본 제공하는 웹호스팅 사용 시 추가 설정은 없습니다.**
+**[Android] 릴리즈 모드에서는 인터넷 권한 설정을 확인해주세요!**
+```xml
+// AndroidManifest.xml
+<uses-permission android:name="android.permission.INTERNET"/>
+```
 
-### ❗️ 로컬서버 사용
+### ❗️ 로컬서버 사용 (선택)
 [useLocalServer] 옵션을 통해 로컬서버 호스팅을 사용하면 http통신에 필요한 플랫폼별 설정을 해야 합니다.
 ### Android
 AndroidManifest.xml 파일의 <application>에 `android:usesCleartextTraffic="true"`를 추가해주세요.
