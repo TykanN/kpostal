@@ -179,7 +179,7 @@ class _KpostalViewState extends State<KpostalView> {
                         allowedOriginRules: Set.from(["*"]),
                         onPostMessage:
                             (message, sourceOrigin, isMainFrame, replyProxy) =>
-                                handleMessage(message),
+                                handleMessage(message?.data.toString()),
                       ),
                     );
                   } else {
