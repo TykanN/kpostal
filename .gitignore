@@ -31,7 +31,6 @@
 build/
 pubspec.lock
 
-
 # Android related
 **/android/**/gradle-wrapper.jar
 **/android/.gradle
@@ -75,3 +74,8 @@ pubspec.lock
 !**/ios/**/default.mode2v3
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
+
+# FVM Version Cache
+.fvm/
+
+.vscode/

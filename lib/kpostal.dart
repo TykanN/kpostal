@@ -9,6 +9,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/kpostal_model.dart';
+import 'package:kpostal/src/log.dart';
 
 class KpostalView extends StatefulWidget {
   static const String routeName = '/kpostal';
@@ -85,12 +86,11 @@ class KpostalView extends StatefulWidget {
         useKakaoGeocoder = kakaoKey.isNotEmpty;
 
   @override
-  _KpostalViewState createState() => _KpostalViewState();
+  State<KpostalView> createState() => _KpostalViewState();
 }
 
 class _KpostalViewState extends State<KpostalView> {
-  late final InAppLocalhostServer _localhost =
-      InAppLocalhostServer(port: widget.localPort);
+  late final InAppLocalhostServer _localhost = InAppLocalhostServer(port: widget.localPort);
 
   late final Uri targetUri;
 
@@ -99,7 +99,7 @@ class _KpostalViewState extends State<KpostalView> {
 
   @override
   void setState(VoidCallback fn) {
-    if (this.mounted) {
+    if (mounted) {
       super.setState(fn);
     }
   }
@@ -115,20 +115,15 @@ class _KpostalViewState extends State<KpostalView> {
       });
     }
 
-    final Map<String, String> _queryParams = {
-      'enableKakao': '${widget.useKakaoGeocoder}'
-    };
+    final Map<String, String> queryParams = {'enableKakao': '${widget.useKakaoGeocoder}'};
     if (widget.useKakaoGeocoder) {
-      _queryParams.addAll({'key': widget.kakaoKey});
+      queryParams.addAll({'key': widget.kakaoKey});
     }
 
     targetUri = widget.useLocalServer
         ? Uri.http(
-            'localhost:${widget.localPort}',
-            '/packages/kpostal/assets/kakao_postcode_localhost.html',
-            _queryParams)
-        : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html',
-            _queryParams);
+            'localhost:${widget.localPort}', '/packages/kpostal/assets/kakao_postcode_localhost.html', queryParams)
+        : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html', queryParams);
   }
 
   @override
@@ -149,15 +144,14 @@ class _KpostalViewState extends State<KpostalView> {
                 color: widget.titleColor,
               ),
             ),
-            iconTheme:
-                Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
+            iconTheme: Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
           ),
       body: Stack(
         children: [
           Builder(
             builder: (BuildContext context) {
               if (widget.useLocalServer && !isLocalhostOn) {
-                return Center(
+                return const Center(
                   child: CircularProgressIndicator(),
                 );
               }
@@ -171,15 +165,13 @@ class _KpostalViewState extends State<KpostalView> {
                   // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
                   // WEB_MESSAGE_LISTENER 지원 여부 확인
                   if (!Platform.isAndroid ||
-                      await WebViewFeature.isFeatureSupported(
-                          WebViewFeature.WEB_MESSAGE_LISTENER)) {
+                      await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
                     await controller.addWebMessageListener(
                       WebMessageListener(
                         jsObjectName: "onComplete",
-                        allowedOriginRules: Set.from(["*"]),
-                        onPostMessage:
-                            (message, sourceOrigin, isMainFrame, replyProxy) =>
-                                handleMessage(message?.data.toString()),
+                        allowedOriginRules: {"*"},
+                        onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
+                            handleMessage(message?.data.toString()),
                       ),
                     );
                   } else {
@@ -210,8 +202,7 @@ class _KpostalViewState extends State<KpostalView> {
                   height: double.infinity,
                   color: Colors.white,
                   child: Center(
-                    child: widget.onLoading ??
-                        CircularProgressIndicator(color: widget.loadingColor),
+                    child: widget.onLoading ?? CircularProgressIndicator(color: widget.loadingColor),
                   ),
                 ),
         ],
@@ -220,23 +211,25 @@ class _KpostalViewState extends State<KpostalView> {
   }
 
   void handleMessage(String? message) async {
+    final navigator = Navigator.of(context);
     try {
       if (message != null) {
+        log(message);
         Kpostal result = Kpostal.fromJson(jsonDecode(message));
 
-        Location? _latLng = await result.latLng;
+        Location? latLng = await result.latLng;
 
-        if (_latLng != null) {
-          result.latitude = _latLng.latitude;
-          result.longitude = _latLng.longitude;
+        if (latLng != null) {
+          result.latitude = latLng.latitude;
+          result.longitude = latLng.longitude;
         }
         widget.callback?.call(result);
-        Navigator.of(context).pop(result);
+        navigator.pop(result);
       } else {
         throw 'fail to load message : message is null';
       }
     } catch (e) {
-      Navigator.of(context).pop(context);
+      navigator.pop();
     }
   }
 }
