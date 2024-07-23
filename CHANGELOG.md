@@ -1,26 +1,19 @@
-## 1.0.0-dev.3
+## 1.0.0
 
-- Dart SDK version `<4.0.0`
+### ENHANCEMENTS
+
+- Fix typo
 - Example App targets Android SDK 34 version
-- geocoding update to 2.2.1+1
-
-## 1.0.0-dev.2
-
-### BREAKING CHANGES
-
-- Dart SDK version `>=2.17.0`
 - Update docs and example
 
-## 1.0.0-dev.1
-
-- flutter_inappwebview update `6.x.x` version
-- fix typo
-
 ### BREAKING CHANGES
 
+- Dart SDK version `>=2.17.0 <4.0.0`
 - Flutter minimum version `3.0.0`
 - Updated Android `minSdkVersion` to `19`
-- the minimum iOS version to be `9.0`(ios/Podfile) with `XCode version >= 14`
+- Changed `flutter_inappwebview` dependency version to `^6.0.0`
+- Changed `geocoding` dependency version to `^3.0.0`
+- The minimum iOS version to be `9.0`(ios/Podfile) with `XCode version >= 14`
 
 ## 0.5.1
 

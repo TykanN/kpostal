@@ -135,9 +135,10 @@ class Kpostal {
         jibunAddress: (json[KpostalConst.jibunAddress] as String).isNotEmpty
             ? json[KpostalConst.jibunAddress] as String
             : json[KpostalConst.autoJibunAddress] as String,
-        jibunAddressEng: (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
-            ? json[KpostalConst.jibunAddressEng] as String
-            : json[KpostalConst.autoJibunAddressEng] as String,
+        jibunAddressEng:
+            (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
+                ? json[KpostalConst.jibunAddressEng] as String
+                : json[KpostalConst.autoJibunAddressEng] as String,
         buildingCode: json[KpostalConst.buildingCode] as String,
         buildingName: json[KpostalConst.buildingName] as String,
         apartment: json[KpostalConst.apartment] as String,
@@ -158,7 +159,8 @@ class Kpostal {
         userSelectedType: json[KpostalConst.userSelectedType] as String,
         userLanguageType: json[KpostalConst.userLanguageType] as String,
         kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
-        kakaoLongitude: double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
+        kakaoLongitude:
+            double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
       );
 
   @override

@@ -1,6 +1,6 @@
 name: kpostal
 description: Kpostal package can search for Korean postal addresses using Kakao postcode service.
-version: 1.0.0-dev.3
+version: 1.0.0
 homepage: https://github.com/tykann/kpostal
 
 environment:

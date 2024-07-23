@@ -90,7 +90,8 @@ class KpostalView extends StatefulWidget {
 }
 
 class _KpostalViewState extends State<KpostalView> {
-  late final InAppLocalhostServer _localhost = InAppLocalhostServer(port: widget.localPort);
+  late final InAppLocalhostServer _localhost =
+      InAppLocalhostServer(port: widget.localPort);
 
   late final Uri targetUri;
 
@@ -115,15 +116,20 @@ class _KpostalViewState extends State<KpostalView> {
       });
     }
 
-    final Map<String, String> queryParams = {'enableKakao': '${widget.useKakaoGeocoder}'};
+    final Map<String, String> queryParams = {
+      'enableKakao': '${widget.useKakaoGeocoder}'
+    };
     if (widget.useKakaoGeocoder) {
       queryParams.addAll({'key': widget.kakaoKey});
     }
 
     targetUri = widget.useLocalServer
         ? Uri.http(
-            'localhost:${widget.localPort}', '/packages/kpostal/assets/kakao_postcode_localhost.html', queryParams)
-        : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html', queryParams);
+            'localhost:${widget.localPort}',
+            '/packages/kpostal/assets/kakao_postcode_localhost.html',
+            queryParams)
+        : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html',
+            queryParams);
   }
 
   @override
@@ -144,7 +150,8 @@ class _KpostalViewState extends State<KpostalView> {
                 color: widget.titleColor,
               ),
             ),
-            iconTheme: Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
+            iconTheme:
+                Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
           ),
       body: Stack(
         children: [
@@ -165,13 +172,15 @@ class _KpostalViewState extends State<KpostalView> {
                   // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
                   // WEB_MESSAGE_LISTENER 지원 여부 확인
                   if (!Platform.isAndroid ||
-                      await WebViewFeature.isFeatureSupported(WebViewFeature.WEB_MESSAGE_LISTENER)) {
+                      await WebViewFeature.isFeatureSupported(
+                          WebViewFeature.WEB_MESSAGE_LISTENER)) {
                     await controller.addWebMessageListener(
                       WebMessageListener(
                         jsObjectName: "onComplete",
                         allowedOriginRules: {"*"},
-                        onPostMessage: (message, sourceOrigin, isMainFrame, replyProxy) =>
-                            handleMessage(message?.data.toString()),
+                        onPostMessage:
+                            (message, sourceOrigin, isMainFrame, replyProxy) =>
+                                handleMessage(message?.data.toString()),
                       ),
                     );
                   } else {
@@ -202,7 +211,8 @@ class _KpostalViewState extends State<KpostalView> {
                   height: double.infinity,
                   color: Colors.white,
                   child: Center(
-                    child: widget.onLoading ?? CircularProgressIndicator(color: widget.loadingColor),
+                    child: widget.onLoading ??
+                        CircularProgressIndicator(color: widget.loadingColor),
                   ),
                 ),
         ],
