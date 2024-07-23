@@ -1,5 +1,5 @@
 name: kpostal
-description: Kpostal package can search for Korean postal addresses using Kakao postcode service. This package is inspired by Kopo package that is discontinued.
+description: Kpostal package can search for Korean postal addresses using Kakao postcode service.
 version: 1.0.0-dev.3
 homepage: https://github.com/tykann/kpostal
 
@@ -11,11 +11,12 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_inappwebview: ^6.0.0
-  geocoding: ^2.2.1+1
+  geocoding: ^3.0.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  flutter_lints:
 
 flutter:
   assets:

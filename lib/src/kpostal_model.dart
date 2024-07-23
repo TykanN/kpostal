@@ -1,7 +1,6 @@
-import 'dart:developer';
-
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/constant.dart';
+import 'package:kpostal/src/log.dart';
 
 class Kpostal {
   /// 국가기초구역번호. 2015년 8월 1일부터 시행된 새 우편번호.
@@ -136,10 +135,9 @@ class Kpostal {
         jibunAddress: (json[KpostalConst.jibunAddress] as String).isNotEmpty
             ? json[KpostalConst.jibunAddress] as String
             : json[KpostalConst.autoJibunAddress] as String,
-        jibunAddressEng:
-            (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
-                ? json[KpostalConst.jibunAddressEng] as String
-                : json[KpostalConst.autoJibunAddressEng] as String,
+        jibunAddressEng: (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
+            ? json[KpostalConst.jibunAddressEng] as String
+            : json[KpostalConst.autoJibunAddressEng] as String,
         buildingCode: json[KpostalConst.buildingCode] as String,
         buildingName: json[KpostalConst.buildingName] as String,
         apartment: json[KpostalConst.apartment] as String,
@@ -160,8 +158,7 @@ class Kpostal {
         userSelectedType: json[KpostalConst.userSelectedType] as String,
         userLanguageType: json[KpostalConst.userLanguageType] as String,
         kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
-        kakaoLongitude:
-            double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
+        kakaoLongitude: double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
       );
 
   @override
@@ -171,26 +168,27 @@ class Kpostal {
 
   /// 유저가 화면에서 선택한 주소를 그대로 return합니다.
   String get userSelectedAddress {
-    if (this.userSelectedType == 'J') {
-      if (this.userLanguageType == 'E') return this.jibunAddressEng;
-      return this.jibunAddress;
+    if (userSelectedType == 'J') {
+      if (userLanguageType == 'E') return jibunAddressEng;
+      return jibunAddress;
     }
-    if (this.userLanguageType == 'E') return this.roadAddressEng;
-    return this.roadAddress;
+    if (userLanguageType == 'E') return roadAddressEng;
+    return roadAddress;
   }
 
   Future<List<Location>> searchLocation(String address) async {
     try {
-      final List<Location> result = await locationFromAddress(address,
-          localeIdentifier: KpostalConst.localeKo);
-      log('LatLng Found from "$address"', name: KpostalConst.packageName);
+      setLocaleIdentifier(KpostalConst.localeKo);
+      final List<Location> result = await locationFromAddress(address);
+      log('LatLng Found from "$address"');
       return result;
     }
     // 경위도 조회 결과가 없는 경우
     on NoResultFoundException {
-      log('LatLng NotFound from "$address"', name: KpostalConst.packageName);
+      log('LatLng NotFound from "$address"');
       return <Location>[];
-    } catch (_) {
+    } catch (e) {
+      log('Unexpected Exception Occurs from "$address" : $e');
       return <Location>[];
     }
   }
@@ -204,8 +202,7 @@ class Kpostal {
       final List<Location> fromAddress = await searchLocation(address);
       return fromAddress.last;
     } on StateError {
-      log('Location is not found from geocoding',
-          name: KpostalConst.packageName);
+      log('Location is not found from geocoding');
       return null;
     }
   }

@@ -3,10 +3,12 @@ import 'package:kpostal/kpostal.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -14,18 +16,18 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Kpostal Example'),
+      home: const MyHomePage(title: 'Kpostal Example'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({super.key, required this.title});
+  const MyHomePage({super.key, required this.title});
 
   final String title;
 
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  State<MyHomePage> createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
@@ -58,48 +60,39 @@ class _MyHomePageState extends State<MyHomePage> {
                       // kakaoKey: '{Add your KAKAO DEVELOPERS JS KEY}',
                       callback: (Kpostal result) {
                         setState(() {
-                          this.postCode = result.postCode;
-                          this.roadAddress = result.address;
-                          this.jibunAddress = result.jibunAddress;
-                          this.latitude = result.latitude.toString();
-                          this.longitude = result.longitude.toString();
-                          this.kakaoLatitude = result.kakaoLatitude.toString();
-                          this.kakaoLongitude =
-                              result.kakaoLongitude.toString();
+                          postCode = result.postCode;
+                          roadAddress = result.address;
+                          jibunAddress = result.jibunAddress;
+                          latitude = result.latitude.toString();
+                          longitude = result.longitude.toString();
+                          kakaoLatitude = result.kakaoLatitude.toString();
+                          kakaoLongitude = result.kakaoLongitude.toString();
                         });
                       },
                     ),
                   ),
                 );
               },
-              style: ButtonStyle(
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue)),
-              child: Text(
+              style: ButtonStyle(backgroundColor: MaterialStateProperty.all<Color>(Colors.blue)),
+              child: const Text(
                 'Search Address',
                 style: TextStyle(color: Colors.white),
               ),
             ),
             Container(
-              padding: EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  Text('postCode',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.postCode}'),
-                  Text('road_address',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.roadAddress}'),
-                  Text('jibun_address',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text('result: ${this.jibunAddress}'),
-                  Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.latitude} / longitude: ${this.longitude}'),
-                  Text('through KAKAO Geocoder',
-                      style: TextStyle(fontWeight: FontWeight.bold)),
-                  Text(
-                      'latitude: ${this.kakaoLatitude} / longitude: ${this.kakaoLongitude}'),
+                  const Text('postCode', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: $postCode'),
+                  const Text('road_address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: $roadAddress'),
+                  const Text('jibun_address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('result: $jibunAddress'),
+                  const Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('latitude: $latitude / longitude: $longitude'),
+                  const Text('through KAKAO Geocoder', style: TextStyle(fontWeight: FontWeight.bold)),
+                  Text('latitude: $kakaoLatitude / longitude: $kakaoLongitude'),
                 ],
               ),
             ),
