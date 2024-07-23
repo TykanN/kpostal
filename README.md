@@ -1,16 +1,16 @@
 [![pub package](https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue)](https://pub.dev/packages/kpostal)
 [![Pub Likes](https://img.shields.io/pub/likes/kpostal)](https://pub.dev/packages/kpostal/score)
+[![Test](https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg)](https://github.com/TykanN/kpostal/actions/workflows/test.yml)
 
 [![English](https://img.shields.io/badge/Language-English-9cf?style=for-the-badge)](README.md)
 [![Korean](https://img.shields.io/badge/Language-Korean-9cf?style=for-the-badge)](README.ko-kr.md)
 
-
 # About kpostal
 
-Kpostal package can search for Korean postal addresses using [Kakao postcode service](https://postcode.map.daum.net/guide).   
+Kpostal package can search for Korean postal addresses using [Kakao postcode service](https://postcode.map.daum.net/guide).  
 This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that is discontinued.
 
-By default, it uses the Address Search page hosted on Github.   
+By default, it uses the Address Search page hosted on Github.  
 It's the easiest way to use it.
 
 To respond to errors that arise from hosting problems, **it also supports hosting local server.**
@@ -25,6 +25,7 @@ Support Null-Safety!
 ## Getting Started
 
 Add kpostal to your pubspec.yaml file:
+
 ```yaml
 dependencies:
   kpostal:
@@ -35,15 +36,20 @@ dependencies:
 **🧑🏻‍💻 Neither iOS nor Android requires any action when using default hosting.**
 
 **[Android] Check internet permission setting on release mode!**
+
 ```xml
 // AndroidManifest.xml
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
 ### ❗ Use local server (Optional)
+
 If you use the [useLocalServer] option to host a local server, you should make the platform specific settings required for http communication.
+
 ### Android
+
 Add `android:usesClearextTraffic="true"` to <application> in AndroidManifest.xml file.
+
 ```xml
 <application
         android:label="[your_app]"
@@ -51,13 +57,15 @@ Add `android:usesClearextTraffic="true"` to <application> in AndroidManifest.xml
         ...
         android:usesCleartextTraffic="true"
         ...
-        >  
+        >
     ...
 </application>
 ```
 
 ### iOS
+
 Add `NSAppTransportSecurity` to info.plist file.
+
 ```xml
 <plist version="1.0">
 <dict>
@@ -72,13 +80,14 @@ Add `NSAppTransportSecurity` to info.plist file.
 </plist>
 ```
 
-### 🧩 Kakao geocoding(*optional)
+### 🧩 Kakao geocoding(\*optional)
+
 1. Go to [Kakao Developer Site](https://developers.kakao.com)
 2. Register developer and create app
 3. Add Web Platform: Select App – [Platform] – [Web Platform Registration] – Site Domain Registration
 4. Register Site Domain: Select the Web platform, and register Site Domain.
-    - default, use `https://tykann.github.io`
-    - if you use local server, use `http://localhost:{your port, default is 8080}`
+   - default, use `https://tykann.github.io`
+   - if you use local server, use `http://localhost:{your port, default is 8080}`
 5. Use the JavaScript key at the top of the page as the app key for the map API.
 
 ## Example
@@ -93,7 +102,7 @@ TextButton(
             builder: (_) => KpostalView(
                 callback: (Kpostal result) {
                     print(result.address);
-                }, 
+                },
             ),
         ));
     },
