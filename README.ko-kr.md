@@ -20,6 +20,16 @@ Kpostal은 해당 주소의 경위도 정보도 제공합니다. iOS 및 Android
 
 Null-Safety를 지원합니다.
 
+## 플랫폼 지원
+
+| Android | iOS | macOS | Web | Windows | Linux |
+| :-----: | :-: | :---: | :-: | :-----: | :---: |
+|   ✅    | ✅  |  ✅   | ✅  |   ❌    |  ❌   |
+
+- Android/iOS/macOS는 [webview_flutter](https://pub.dev/packages/webview_flutter), Web은 iframe 기반으로 동작합니다.
+- Web에서는 `useLocalServer` 옵션이 지원되지 않으며(무시됨), 플랫폼 지오코딩을 사용할 수 없어 `latitude`/`longitude`가 `null`로 반환됩니다. `kakaoKey` 지오코딩을 사용하세요.
+- Flutter 3.38+ / Dart 3.10+ 이 필요합니다.
+
 <div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
 
 ## 시작하기
