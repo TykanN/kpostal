@@ -4,12 +4,12 @@ export 'src/kpostal_model.dart';
 export 'src/constant.dart';
 
 import 'dart:convert';
-import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/kpostal_model.dart';
+import 'package:kpostal/src/kpostal_server.dart';
 import 'package:kpostal/src/log.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class KpostalView extends StatefulWidget {
   static const String routeName = '/kpostal';
@@ -90,8 +90,8 @@ class KpostalView extends StatefulWidget {
 }
 
 class _KpostalViewState extends State<KpostalView> {
-  late final InAppLocalhostServer _localhost =
-      InAppLocalhostServer(port: widget.localPort);
+  late final KpostalServer _localhost = KpostalServer(port: widget.localPort);
+  late final WebViewController _controller;
 
   late final Uri targetUri;
 
@@ -108,13 +108,6 @@ class _KpostalViewState extends State<KpostalView> {
   @override
   void initState() {
     super.initState();
-    if (widget.useLocalServer) {
-      _localhost.start().then((_) {
-        setState(() {
-          isLocalhostOn = true;
-        });
-      });
-    }
 
     final Map<String, String> queryParams = {
       'enableKakao': '${widget.useKakaoGeocoder}'
@@ -130,6 +123,37 @@ class _KpostalViewState extends State<KpostalView> {
             queryParams)
         : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html',
             queryParams);
+
+    _controller = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..setBackgroundColor(Colors.white)
+      // The HTML bridges the selected address back through
+      // `onComplete.postMessage(message)`, which maps directly to this channel.
+      ..addJavaScriptChannel(
+        'onComplete',
+        onMessageReceived: (JavaScriptMessage message) =>
+            handleMessage(message.message),
+      )
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onPageFinished: (_) {
+            setState(() {
+              initLoadComplete = true;
+            });
+          },
+        ),
+      );
+
+    if (widget.useLocalServer) {
+      _localhost.start().then((_) {
+        setState(() {
+          isLocalhostOn = true;
+        });
+        _controller.loadRequest(targetUri);
+      });
+    } else {
+      _controller.loadRequest(targetUri);
+    }
   }
 
   @override
@@ -163,45 +187,7 @@ class _KpostalViewState extends State<KpostalView> {
                 );
               }
 
-              return InAppWebView(
-                initialSettings: InAppWebViewSettings(
-                  useHybridComposition: true,
-                  javaScriptEnabled: true,
-                ),
-                onWebViewCreated: (controller) async {
-                  // 안드로이드는 롤리팝 버전 이상 빌드에서만 작동 유의
-                  // WEB_MESSAGE_LISTENER 지원 여부 확인
-                  if (!Platform.isAndroid ||
-                      await WebViewFeature.isFeatureSupported(
-                          WebViewFeature.WEB_MESSAGE_LISTENER)) {
-                    await controller.addWebMessageListener(
-                      WebMessageListener(
-                        jsObjectName: "onComplete",
-                        allowedOriginRules: {"*"},
-                        onPostMessage:
-                            (message, sourceOrigin, isMainFrame, replyProxy) =>
-                                handleMessage(message?.data.toString()),
-                      ),
-                    );
-                  } else {
-                    controller.addJavaScriptHandler(
-                      handlerName: 'onComplete',
-                      callback: (args) => handleMessage(args[0]),
-                    );
-                  }
-
-                  await controller.loadUrl(
-                    urlRequest: URLRequest(
-                      url: WebUri.uri(targetUri),
-                    ),
-                  );
-                },
-                onLoadStop: (_, __) {
-                  setState(() {
-                    initLoadComplete = true;
-                  });
-                },
-              );
+              return WebViewWidget(controller: _controller);
             },
           ),
           initLoadComplete
