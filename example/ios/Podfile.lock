@@ -1,39 +1,30 @@
 PODS:
   - Flutter (1.0.0)
-  - flutter_inappwebview_ios (0.0.1):
+  - geocoding_darwin (0.0.1):
     - Flutter
-    - flutter_inappwebview_ios/Core (= 0.0.1)
-    - OrderedSet (~> 6.0.3)
-  - flutter_inappwebview_ios/Core (0.0.1):
+    - FlutterMacOS
+  - webview_flutter_wkwebview (0.0.1):
     - Flutter
-    - OrderedSet (~> 6.0.3)
-  - geocoding_ios (1.0.5):
-    - Flutter
-  - OrderedSet (6.0.3)
+    - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - flutter_inappwebview_ios (from `.symlinks/plugins/flutter_inappwebview_ios/ios`)
-  - geocoding_ios (from `.symlinks/plugins/geocoding_ios/ios`)
-
-SPEC REPOS:
-  trunk:
-    - OrderedSet
+  - geocoding_darwin (from `.symlinks/plugins/geocoding_darwin/darwin`)
+  - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  flutter_inappwebview_ios:
-    :path: ".symlinks/plugins/flutter_inappwebview_ios/ios"
-  geocoding_ios:
-    :path: ".symlinks/plugins/geocoding_ios/ios"
+  geocoding_darwin:
+    :path: ".symlinks/plugins/geocoding_darwin/darwin"
+  webview_flutter_wkwebview:
+    :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
-  Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  flutter_inappwebview_ios: 6f63631e2c62a7c350263b13fa5427aedefe81d4
-  geocoding_ios: d7460f56e80e118d57678efe5c2cdc888739ff18
-  OrderedSet: e539b66b644ff081c73a262d24ad552a69be3a94
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  geocoding_darwin: 968545604e6896deeef55517d53a81b3b9801971
+  webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
 
-PODFILE CHECKSUM: c4c93c5f6502fe2754f48404d3594bf779584011
+PODFILE CHECKSUM: 0dbd5a87e0ace00c9610d2037ac22083a01f861d
 
-COCOAPODS: 1.15.2
+COCOAPODS: 1.16.2
