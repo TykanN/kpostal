@@ -24,17 +24,17 @@
   <body>
     <div id="full-size"></div>
   </body>
-  <script src="http://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
     // 화면 element
     var element_layer = document.getElementById("full-size");
     const URLSearch = new URLSearchParams(location.search);
     var key = URLSearch.get("key");
-    var enableKakao = JSON.parse(URLSearch.get("enableKakao"));
-
+    var enableKakao =  JSON.parse(URLSearch.get("enableKakao"));
+   
     if (enableKakao) {
       var jsUrl =
-        "http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
+        "https://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=" +
         key +
         "&libraries=services";
       var geocodeJS = document.createElement("script");

@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/constant.dart';
 import 'package:kpostal/src/log.dart';
@@ -178,17 +180,27 @@ class Kpostal {
     return roadAddress;
   }
 
+  static const Locale _localeKo = Locale('ko', 'KR');
+
+  /// 플랫폼 geocoding 지원 여부 (Android/iOS/macOS)
+  static bool get _geocodingSupported =>
+      !kIsWeb &&
+      (defaultTargetPlatform == TargetPlatform.android ||
+          defaultTargetPlatform == TargetPlatform.iOS ||
+          defaultTargetPlatform == TargetPlatform.macOS);
+
   Future<List<Location>> searchLocation(String address) async {
     try {
-      setLocaleIdentifier(KpostalConst.localeKo);
-      final List<Location> result = await locationFromAddress(address);
-      log('LatLng Found from "$address"');
+      final Geocoding geocoding = Geocoding(locale: _localeKo);
+      final List<Location> result =
+          await geocoding.locationFromAddress(address, locale: _localeKo);
+      // 경위도 조회 결과가 없는 경우 빈 리스트가 반환됩니다.
+      if (result.isEmpty) {
+        log('LatLng NotFound from "$address"');
+      } else {
+        log('LatLng Found from "$address"');
+      }
       return result;
-    }
-    // 경위도 조회 결과가 없는 경우
-    on NoResultFoundException {
-      log('LatLng NotFound from "$address"');
-      return <Location>[];
     } catch (e) {
       log('Unexpected Exception Occurs from "$address" : $e');
       return <Location>[];
@@ -196,6 +208,10 @@ class Kpostal {
   }
 
   Future<Location?> get latLng async {
+    if (!_geocodingSupported) {
+      log('Platform geocoding is not supported on this platform');
+      return null;
+    }
     try {
       final List<Location> fromEngAddress = await searchLocation(addressEng);
       if (fromEngAddress.isNotEmpty) {
