@@ -53,6 +53,17 @@ dependencies:
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
+**[macOS] 앱에 네트워크 entitlement를 추가해주세요.**
+
+```xml
+// macos/Runner/DebugProfile.entitlements & Release.entitlements
+<key>com.apple.security.network.client</key>
+<true/>
+// [useLocalServer] 사용 시에만 필요
+<key>com.apple.security.network.server</key>
+<true/>
+```
+
 ### ❗️ 로컬서버 사용 (선택)
 
 [useLocalServer] 옵션을 통해 로컬서버 호스팅을 사용하면 http통신에 필요한 플랫폼별 설정을 해야 합니다.

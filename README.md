@@ -52,6 +52,17 @@ dependencies:
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
+**[macOS] Add network entitlements to your app.**
+
+```xml
+// macos/Runner/DebugProfile.entitlements & Release.entitlements
+<key>com.apple.security.network.client</key>
+<true/>
+// only if you use [useLocalServer]
+<key>com.apple.security.network.server</key>
+<true/>
+```
+
 ### ❗ Use local server (Optional)
 
 If you use the [useLocalServer] option to host a local server, you should make the platform specific settings required for http communication.

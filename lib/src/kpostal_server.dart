@@ -11,30 +11,23 @@ import 'package:kpostal/src/log.dart';
 /// 카카오 개발자 콘솔에 등록된 도메인(예: `http://localhost:8080`)에서만
 /// 동작하므로 실제 `http://localhost` 출처로 서빙해야 합니다.
 class KpostalServer {
-  KpostalServer({
-    this.host = 'localhost',
-    this.port = 8080,
-    this.assetPath = 'packages/kpostal/assets/kakao_postcode_localhost.html',
-  });
-
-  final String host;
+  KpostalServer({this.port = 8080});
 
   final int port;
 
-  /// 서빙할 HTML 페이지의 Flutter 에셋 경로
-  final String assetPath;
+  static const String _assetPath =
+      'packages/kpostal/assets/kakao_postcode_localhost.html';
 
   HttpServer? _server;
-
-  bool get isRunning => _server != null;
 
   /// 서버를 시작합니다. 이미 실행 중이면 아무것도 하지 않습니다.
   Future<void> start() async {
     if (_server != null) return;
 
-    final String html = await rootBundle.loadString(assetPath);
+    final String html = await rootBundle.loadString(_assetPath);
 
-    final HttpServer server = await HttpServer.bind(host, port, shared: true);
+    final HttpServer server =
+        await HttpServer.bind('localhost', port, shared: true);
     _server = server;
 
     server.listen((HttpRequest request) async {
@@ -44,7 +37,7 @@ class KpostalServer {
       await request.response.close();
     });
 
-    log('KpostalServer started at http://$host:$port');
+    log('KpostalServer started at http://localhost:$port');
   }
 
   /// 서버를 종료합니다.

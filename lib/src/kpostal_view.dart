@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:kpostal/src/kpostal_model.dart';
@@ -109,7 +110,8 @@ class _KpostalViewState extends State<KpostalView> {
       queryParams.addAll({'key': widget.kakaoKey});
     }
 
-    targetUri = widget.useLocalServer
+    // Web은 로컬 서버를 지원하지 않으므로 항상 호스팅된 페이지를 사용합니다.
+    targetUri = !kIsWeb && widget.useLocalServer
         ? Uri.http(
             'localhost:${widget.localPort}',
             '/packages/kpostal/assets/kakao_postcode_localhost.html',
