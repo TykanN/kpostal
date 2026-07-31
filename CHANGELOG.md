@@ -1,3 +1,14 @@
+## 2.0.0-beta.2
+
+### FIXES
+
+- Fixed pub.dev platform detection so the **Web** platform tag is granted: platform geocoding now sits behind a conditional import, and `package:geocoding` is no longer imported on web builds. No API changes — `latLng`/`searchLocation` still return the same `Location` class (re-exported from `geocoding_platform_interface`).
+
+### DOCS
+
+- Overhauled README (logo header, features, collapsible setup guides, migration guide, roadmap).
+- Added `.pubignore` to exclude documentation/hosting-only files from the package archive.
+
 ## 2.0.0-beta.1
 
 ### BREAKING CHANGES
