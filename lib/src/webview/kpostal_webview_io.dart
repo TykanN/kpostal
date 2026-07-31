@@ -40,9 +40,7 @@ class _KpostalWebViewState extends State<KpostalWebView> {
             widget.onMessage(message.message),
       )
       ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (_) => widget.onLoadFinished(),
-        ),
+        NavigationDelegate(onPageFinished: (_) => widget.onLoadFinished()),
       );
     _load();
   }

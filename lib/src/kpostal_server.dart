@@ -26,8 +26,11 @@ class KpostalServer {
 
     final String html = await rootBundle.loadString(_assetPath);
 
-    final HttpServer server =
-        await HttpServer.bind('localhost', port, shared: true);
+    final HttpServer server = await HttpServer.bind(
+      'localhost',
+      port,
+      shared: true,
+    );
     _server = server;
 
     server.listen((HttpRequest request) async {

@@ -2,7 +2,8 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding_platform_interface/geocoding_platform_interface.dart'
+    show Location;
 import 'package:kpostal/src/kpostal_model.dart';
 import 'package:kpostal/src/log.dart';
 import 'package:kpostal/src/webview/kpostal_webview.dart';
@@ -79,9 +80,11 @@ class KpostalView extends StatefulWidget {
     this.loadingColor = Colors.blue,
     this.onLoading,
     this.kakaoKey = '',
-  })  : assert(1024 <= localPort && localPort <= 49151,
-            'localPort is out of range. It should be from 1024 to 49151(Range of Registered Port)'),
-        useKakaoGeocoder = kakaoKey.isNotEmpty;
+  }) : assert(
+         1024 <= localPort && localPort <= 49151,
+         'localPort is out of range. It should be from 1024 to 49151(Range of Registered Port)',
+       ),
+       useKakaoGeocoder = kakaoKey.isNotEmpty;
 
   @override
   State<KpostalView> createState() => _KpostalViewState();
@@ -104,7 +107,7 @@ class _KpostalViewState extends State<KpostalView> {
     super.initState();
 
     final Map<String, String> queryParams = {
-      'enableKakao': '${widget.useKakaoGeocoder}'
+      'enableKakao': '${widget.useKakaoGeocoder}',
     };
     if (widget.useKakaoGeocoder) {
       queryParams.addAll({'key': widget.kakaoKey});
@@ -115,26 +118,30 @@ class _KpostalViewState extends State<KpostalView> {
         ? Uri.http(
             'localhost:${widget.localPort}',
             '/packages/kpostal/assets/kakao_postcode_localhost.html',
-            queryParams)
+            queryParams,
+          )
         // v1 사용자와 공유되는 kakao_postcode.html과 분리된 v2 전용 페이지입니다.
-        : Uri.https('tykann.github.io',
-            '/kpostal/assets/kakao_postcode_v2.html', queryParams);
+        : Uri.https(
+            'tykann.github.io',
+            '/kpostal/assets/kakao_postcode_v2.html',
+            queryParams,
+          );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: widget.appBar ??
+      appBar:
+          widget.appBar ??
           AppBar(
             backgroundColor: widget.appBarColor,
             title: Text(
               widget.title,
-              style: TextStyle(
-                color: widget.titleColor,
-              ),
+              style: TextStyle(color: widget.titleColor),
             ),
-            iconTheme:
-                Theme.of(context).iconTheme.copyWith(color: widget.titleColor),
+            iconTheme: Theme.of(
+              context,
+            ).iconTheme.copyWith(color: widget.titleColor),
           ),
       body: Stack(
         children: [
@@ -156,7 +163,8 @@ class _KpostalViewState extends State<KpostalView> {
                   height: double.infinity,
                   color: Colors.white,
                   child: Center(
-                    child: widget.onLoading ??
+                    child:
+                        widget.onLoading ??
                         CircularProgressIndicator(color: widget.loadingColor),
                   ),
                 ),
