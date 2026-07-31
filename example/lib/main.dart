@@ -13,9 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Kpostal Example',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: ThemeData(primarySwatch: Colors.blue),
       home: const MyHomePage(title: 'Kpostal Example'),
     );
   }
@@ -42,9 +40,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
+      appBar: AppBar(title: Text(widget.title)),
       body: Container(
         alignment: Alignment.center,
         child: Column(
@@ -73,7 +69,9 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 );
               },
-              style: ButtonStyle(backgroundColor: WidgetStateProperty.all<Color>(Colors.blue)),
+              style: ButtonStyle(
+                backgroundColor: WidgetStateProperty.all<Color>(Colors.blue),
+              ),
               child: const Text(
                 'Search Address',
                 style: TextStyle(color: Colors.white),
@@ -83,15 +81,30 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(40.0),
               child: Column(
                 children: [
-                  const Text('postCode', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'postCode',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text('result: $postCode'),
-                  const Text('road_address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'road_address',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text('result: $roadAddress'),
-                  const Text('jibun_address', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'jibun_address',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text('result: $jibunAddress'),
-                  const Text('LatLng', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'LatLng',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text('latitude: $latitude / longitude: $longitude'),
-                  const Text('through KAKAO Geocoder', style: TextStyle(fontWeight: FontWeight.bold)),
+                  const Text(
+                    'through KAKAO Geocoder',
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
                   Text('latitude: $kakaoLatitude / longitude: $kakaoLongitude'),
                 ],
               ),

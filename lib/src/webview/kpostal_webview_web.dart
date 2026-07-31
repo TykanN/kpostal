@@ -52,19 +52,21 @@ class _KpostalWebViewState extends State<KpostalWebView> {
         .forTarget(iframe)
         .listen((_) => widget.onLoadFinished());
 
-    ui_web.platformViewRegistry
-        .registerViewFactory(_viewType, (int viewId) => iframe);
+    ui_web.platformViewRegistry.registerViewFactory(
+      _viewType,
+      (int viewId) => iframe,
+    );
 
     _subscription = web.EventStreamProviders.messageEvent
         .forTarget(web.window)
         .listen((web.MessageEvent event) {
-      // 검색 페이지 외 출처의 postMessage는 무시합니다.
-      if (event.origin != widget.targetUri.origin) return;
-      final JSAny? data = event.data;
-      if (data.isA<JSString>()) {
-        widget.onMessage((data as JSString).toDart);
-      }
-    });
+          // 검색 페이지 외 출처의 postMessage는 무시합니다.
+          if (event.origin != widget.targetUri.origin) return;
+          final JSAny? data = event.data;
+          if (data.isA<JSString>()) {
+            widget.onMessage((data as JSString).toDart);
+          }
+        });
   }
 
   @override
