@@ -1,7 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
-import 'package:geocoding/geocoding.dart';
+import 'package:geocoding_platform_interface/geocoding_platform_interface.dart'
+    show Location;
 import 'package:kpostal/src/constant.dart';
+import 'package:kpostal/src/geocode/kpostal_geocoder.dart';
 import 'package:kpostal/src/log.dart';
 
 class Kpostal {
@@ -129,41 +131,39 @@ class Kpostal {
   });
 
   factory Kpostal.fromJson(Map json) => Kpostal(
-        postCode: json[KpostalConst.postCode] as String,
-        address: json[KpostalConst.address] as String,
-        addressEng: json[KpostalConst.addressEng] as String,
-        roadAddress: json[KpostalConst.roadAddress] as String,
-        roadAddressEng: json[KpostalConst.roadAddressEng] as String,
-        jibunAddress: (json[KpostalConst.jibunAddress] as String).isNotEmpty
-            ? json[KpostalConst.jibunAddress] as String
-            : json[KpostalConst.autoJibunAddress] as String,
-        jibunAddressEng:
-            (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
-                ? json[KpostalConst.jibunAddressEng] as String
-                : json[KpostalConst.autoJibunAddressEng] as String,
-        buildingCode: json[KpostalConst.buildingCode] as String,
-        buildingName: json[KpostalConst.buildingName] as String,
-        apartment: json[KpostalConst.apartment] as String,
-        addressType: json[KpostalConst.addressType] as String,
-        sido: json[KpostalConst.sido] as String,
-        sidoEng: json[KpostalConst.sidoEng] as String,
-        sigungu: json[KpostalConst.sigungu] as String,
-        sigunguEng: json[KpostalConst.sigunguEng] as String,
-        sigunguCode: json[KpostalConst.sigunguCode] as String,
-        roadnameCode: json[KpostalConst.roadnameCode] as String,
-        roadname: json[KpostalConst.roadname] as String,
-        roadnameEng: json[KpostalConst.roadnameEng] as String,
-        bcode: json[KpostalConst.bcode] as String,
-        bname: json[KpostalConst.bname] as String,
-        bname1: json[KpostalConst.bname1] as String,
-        bnameEng: json[KpostalConst.bnameEng] as String,
-        query: json[KpostalConst.query] as String,
-        userSelectedType: json[KpostalConst.userSelectedType] as String,
-        userLanguageType: json[KpostalConst.userLanguageType] as String,
-        kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
-        kakaoLongitude:
-            double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
-      );
+    postCode: json[KpostalConst.postCode] as String,
+    address: json[KpostalConst.address] as String,
+    addressEng: json[KpostalConst.addressEng] as String,
+    roadAddress: json[KpostalConst.roadAddress] as String,
+    roadAddressEng: json[KpostalConst.roadAddressEng] as String,
+    jibunAddress: (json[KpostalConst.jibunAddress] as String).isNotEmpty
+        ? json[KpostalConst.jibunAddress] as String
+        : json[KpostalConst.autoJibunAddress] as String,
+    jibunAddressEng: (json[KpostalConst.jibunAddressEng] as String).isNotEmpty
+        ? json[KpostalConst.jibunAddressEng] as String
+        : json[KpostalConst.autoJibunAddressEng] as String,
+    buildingCode: json[KpostalConst.buildingCode] as String,
+    buildingName: json[KpostalConst.buildingName] as String,
+    apartment: json[KpostalConst.apartment] as String,
+    addressType: json[KpostalConst.addressType] as String,
+    sido: json[KpostalConst.sido] as String,
+    sidoEng: json[KpostalConst.sidoEng] as String,
+    sigungu: json[KpostalConst.sigungu] as String,
+    sigunguEng: json[KpostalConst.sigunguEng] as String,
+    sigunguCode: json[KpostalConst.sigunguCode] as String,
+    roadnameCode: json[KpostalConst.roadnameCode] as String,
+    roadname: json[KpostalConst.roadname] as String,
+    roadnameEng: json[KpostalConst.roadnameEng] as String,
+    bcode: json[KpostalConst.bcode] as String,
+    bname: json[KpostalConst.bname] as String,
+    bname1: json[KpostalConst.bname1] as String,
+    bnameEng: json[KpostalConst.bnameEng] as String,
+    query: json[KpostalConst.query] as String,
+    userSelectedType: json[KpostalConst.userSelectedType] as String,
+    userLanguageType: json[KpostalConst.userLanguageType] as String,
+    kakaoLatitude: double.tryParse(json[KpostalConst.kakaoLatitude] ?? ''),
+    kakaoLongitude: double.tryParse(json[KpostalConst.kakaoLongitude] ?? ''),
+  );
 
   @override
   String toString() {
@@ -191,9 +191,7 @@ class Kpostal {
 
   Future<List<Location>> searchLocation(String address) async {
     try {
-      final Geocoding geocoding = Geocoding(locale: _localeKo);
-      final List<Location> result =
-          await geocoding.locationFromAddress(address, locale: _localeKo);
+      final List<Location> result = await geocodeAddress(address, _localeKo);
       // 경위도 조회 결과가 없는 경우 빈 리스트가 반환됩니다.
       if (result.isEmpty) {
         log('LatLng NotFound from "$address"');
