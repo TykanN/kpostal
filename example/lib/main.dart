@@ -39,6 +39,8 @@ class _MyHomePageState extends State<MyHomePage> {
   String kakaoLatitude = '-';
   String kakaoLongitude = '-';
 
+  KpostalWebview _webview = KpostalWebview.webviewFlutter;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -50,11 +52,31 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
+            Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: SegmentedButton<KpostalWebview>(
+                segments: const [
+                  ButtonSegment(
+                    value: KpostalWebview.webviewFlutter,
+                    label: Text('webview_flutter'),
+                  ),
+                  ButtonSegment(
+                    value: KpostalWebview.inappWebview,
+                    label: Text('flutter_inappwebview'),
+                  ),
+                ],
+                selected: {_webview},
+                onSelectionChanged: (selection) {
+                  setState(() => _webview = selection.first);
+                },
+              ),
+            ),
             TextButton(
               onPressed: () async {
                 await Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (_) => KpostalView(
+                      useWebview: _webview,
                       useLocalServer: true,
                       localPort: 1024,
                       // kakaoKey: '{Add your KAKAO DEVELOPERS JS KEY}',

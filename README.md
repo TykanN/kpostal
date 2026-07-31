@@ -125,4 +125,31 @@ KpostalView(
     kakaoKey: '{your kakao developer app\'s JS key}' // if not declared, only use platform's geocoding
     callback: ...
 )
+
+// Choose the WebView backend.
+KpostalView(
+    useWebview: KpostalWebview.webviewFlutter, // default (official webview_flutter)
+    // useWebview: KpostalWebview.inappWebview, // or flutter_inappwebview
+    callback: ...
+)
 ```
+
+## Choose WebView backend
+
+`kpostal` can render the search page with either
+[`webview_flutter`](https://pub.dev/packages/webview_flutter) (default) or
+[`flutter_inappwebview`](https://pub.dev/packages/flutter_inappwebview). Select
+it with the `useWebview` parameter:
+
+```dart
+KpostalView(
+    useWebview: KpostalWebview.webviewFlutter, // default
+)
+
+KpostalView(
+    useWebview: KpostalWebview.inappWebview,
+)
+```
+
+Both backends are bundled with the package, so no extra dependency setup is
+required to switch between them.

@@ -44,8 +44,14 @@
 
     daum.postcode.load(function () {
       function callbackMessage(message) {
-        // `onComplete` is the JavaScript channel registered by webview_flutter.
-        onComplete.postMessage(message);
+        // `onComplete` is registered by webview_flutter's JavaScript channel or
+        // flutter_inappwebview's WebMessageListener. The catch handles older
+        // Android WebViews on flutter_inappwebview that fall back to a handler.
+        try {
+          onComplete.postMessage(message);
+        } catch (err) {
+          window.flutter_inappwebview.callHandler('onComplete', message);
+        }
       }
       new daum.Postcode({
         oncomplete: function (data) {

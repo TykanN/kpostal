@@ -2,14 +2,17 @@ library;
 
 export 'src/kpostal_model.dart';
 export 'src/constant.dart';
+export 'src/kpostal_webview_type.dart';
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:geocoding/geocoding.dart';
+import 'package:kpostal/src/kpostal_inappwebview.dart';
 import 'package:kpostal/src/kpostal_model.dart';
 import 'package:kpostal/src/kpostal_server.dart';
+import 'package:kpostal/src/kpostal_webview_flutter.dart';
+import 'package:kpostal/src/kpostal_webview_type.dart';
 import 'package:kpostal/src/log.dart';
-import 'package:webview_flutter/webview_flutter.dart';
 
 class KpostalView extends StatefulWidget {
   static const String routeName = '/kpostal';
@@ -61,6 +64,13 @@ class KpostalView extends StatefulWidget {
   /// 카카오 API를 통한 경위도 좌표 지오코딩 사용 여부
   final bool useKakaoGeocoder;
 
+  /// Which WebView package to render the search page with.
+  /// Defaults to [KpostalWebview.webviewFlutter].
+  ///
+  /// 검색 페이지를 렌더링할 WebView 패키지를 선택합니다.
+  /// 기본값은 [KpostalWebview.webviewFlutter] 입니다.
+  final KpostalWebview useWebview;
+
   /// [kakaoKey] 설정 시, [kakaoLatitude], [kakaoLongitude] 값을 받을 수 있습니다.
   ///
   /// `developers.kakao.com` 에서 발급받은 유효한 자바스크립트 키를 사용하세요.
@@ -81,6 +91,7 @@ class KpostalView extends StatefulWidget {
     this.loadingColor = Colors.blue,
     this.onLoading,
     this.kakaoKey = '',
+    this.useWebview = KpostalWebview.webviewFlutter,
   })  : assert(1024 <= localPort && localPort <= 49151,
             'localPort is out of range. It should be from 1024 to 49151(Range of Registered Port)'),
         useKakaoGeocoder = kakaoKey.isNotEmpty;
@@ -91,7 +102,6 @@ class KpostalView extends StatefulWidget {
 
 class _KpostalViewState extends State<KpostalView> {
   late final KpostalServer _localhost = KpostalServer(port: widget.localPort);
-  late final WebViewController _controller;
 
   late final Uri targetUri;
 
@@ -124,36 +134,19 @@ class _KpostalViewState extends State<KpostalView> {
         : Uri.https('tykann.github.io', '/kpostal/assets/kakao_postcode.html',
             queryParams);
 
-    _controller = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
-      // The HTML bridges the selected address back through
-      // `onComplete.postMessage(message)`, which maps directly to this channel.
-      ..addJavaScriptChannel(
-        'onComplete',
-        onMessageReceived: (JavaScriptMessage message) =>
-            handleMessage(message.message),
-      )
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onPageFinished: (_) {
-            setState(() {
-              initLoadComplete = true;
-            });
-          },
-        ),
-      );
-
     if (widget.useLocalServer) {
       _localhost.start().then((_) {
         setState(() {
           isLocalhostOn = true;
         });
-        _controller.loadRequest(targetUri);
       });
-    } else {
-      _controller.loadRequest(targetUri);
     }
+  }
+
+  void _onLoadComplete() {
+    setState(() {
+      initLoadComplete = true;
+    });
   }
 
   @override
@@ -187,7 +180,20 @@ class _KpostalViewState extends State<KpostalView> {
                 );
               }
 
-              return WebViewWidget(controller: _controller);
+              switch (widget.useWebview) {
+                case KpostalWebview.webviewFlutter:
+                  return KpostalWebViewFlutter(
+                    targetUri: targetUri,
+                    onMessage: handleMessage,
+                    onLoadComplete: _onLoadComplete,
+                  );
+                case KpostalWebview.inappWebview:
+                  return KpostalInAppWebView(
+                    targetUri: targetUri,
+                    onMessage: handleMessage,
+                    onLoadComplete: _onLoadComplete,
+                  );
+              }
             },
           ),
           initLoadComplete
