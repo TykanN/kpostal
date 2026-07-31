@@ -1,24 +1,36 @@
-[![pub package](https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue)](https://pub.dev/packages/kpostal)
-[![Pub Likes](https://img.shields.io/pub/likes/kpostal)](https://pub.dev/packages/kpostal/score)
-[![Test](https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg)](https://github.com/TykanN/kpostal/actions/workflows/test.yml)
+<p align="center">
+  <a href="https://pub.dev/packages/kpostal">
+    <img src="https://tykann.github.io/kpostal/assets/kpostal_header.png" width="640" alt="kpostal — Korean postal address search for Flutter" />
+  </a>
+</p>
 
-[![English](https://img.shields.io/badge/Language-English-blueviolet?style=for-the-badge)](README.md)
-[![Korean](https://img.shields.io/badge/Language-Korean-blueviolet?style=for-the-badge)](README.ko-kr.md)
+<p align="center">
+  <a href="https://pub.dev/packages/kpostal"><img src="https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue" alt="pub version" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/points/kpostal" alt="pub points" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/likes/kpostal" alt="pub likes" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/dm/kpostal" alt="downloads" /></a>
+  <a href="https://github.com/TykanN/kpostal/actions/workflows/test.yml"><img src="https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg" alt="test" /></a>
+  <a href="https://github.com/TykanN/kpostal/blob/master/LICENSE"><img src="https://img.shields.io/github/license/TykanN/kpostal" alt="license" /></a>
+</p>
 
-# kpostal에 대해
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-9cf?style=for-the-badge" alt="English" /></a>
+  <a href="README.ko-kr.md"><img src="https://img.shields.io/badge/Language-한국어-9cf?style=for-the-badge" alt="Korean" /></a>
+</p>
 
-Kpostal 패키지는 [카카오 우편번호 서비스](https://postcode.map.daum.net/guide)를 이용해서 한국 도로명 주소/우편번호를 검색할 수 있습니다.  
-더 이상 지원이 중단된 [Kopo](https://pub.dev/packages/kopo) 패키지를 참고하여 제작되었습니다.
+---
 
-기본적으로 Github에 호스팅된 주소 검색 페이지를 사용합니다.  
-가장 간편하게 사용할 수 있는 방식입니다.
+**kpostal**은 [카카오(다음) 우편번호 서비스](https://postcode.map.daum.net/guide) 기반의 Flutter 한국 주소 검색 위젯입니다. 위젯 하나만 띄우면 우편번호·도로명/지번 주소·건물 정보 등 구조화된 주소를 돌려받고, 필요하면 경위도 지오코딩까지 지원합니다.
 
-호스팅 문제로 발생하는 에러에 대응하기 위해, 로컬서버 호스팅도 추가로 지원합니다.
+지원이 중단된 [Kopo](https://pub.dev/packages/kopo) 패키지에서 영감을 받아 제작되었습니다.
 
-Kpostal은 해당 주소의 경위도 정보도 제공합니다. iOS 및 Android 플랫폼이 제공하는 무료 지오코딩 서비스를 사용합니다. 이것은 사용에 제한이 있다는 것을 의미합니다. 자세한 내용은 [Apple docs for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder), [Google docs for Android](https://developer.android.com/reference/android/location/Geocoder) 그리고 [geocoding](https://pub.dev/dev/geocoding/geocoding) 플러그인을 참조하십시오.  
-**[카카오맵 API](https://apis.map.kakao.com/web/guide/)키를 발급받아 사용하시는 경우, 카카오 지오코딩 값도 얻을 수 있습니다.**
+## 특징
 
-Null-Safety를 지원합니다.
+- 🔎 **카카오 우편번호 검색**을 `KpostalView` 위젯으로 바로 사용 — 별도 설정 없이 시작할 수 있습니다.
+- 🌐 **멀티 플랫폼**: Android, iOS, macOS, Web 지원. 공식 [webview_flutter](https://pub.dev/packages/webview_flutter) 기반(Web은 iframe).
+- 📍 **지오코딩 내장**: 플랫폼 무료 지오코딩(Android/iOS/macOS)으로 경위도 제공, [카카오맵 API](https://apis.map.kakao.com/web/guide/) 지오코딩도 선택적으로 지원.
+- 🏠 **안정적인 호스팅**: 기본은 GitHub 호스팅 검색 페이지, 호스팅 장애 대비 로컬 서버 폴백(`useLocalServer`) 지원.
+- 🎨 **커스터마이징**: 커스텀 `AppBar`, 로딩 위젯, 결과 콜백.
 
 ## 플랫폼 지원
 
@@ -26,125 +38,147 @@ Null-Safety를 지원합니다.
 | :-----: | :-: | :---: | :-: | :-----: | :---: |
 |   ✅    | ✅  |  ✅   | ✅  |   ❌    |  ❌   |
 
-- Android/iOS/macOS는 [webview_flutter](https://pub.dev/packages/webview_flutter), Web은 iframe 기반으로 동작합니다.
-- Web에서는 `useLocalServer` 옵션이 지원되지 않으며(무시됨), 플랫폼 지오코딩을 사용할 수 없어 `latitude`/`longitude`가 `null`로 반환됩니다. `kakaoKey` 지오코딩을 사용하세요.
 - Flutter 3.38+ / Dart 3.10+ 이 필요합니다.
+- **Web**에서는 `useLocalServer`가 무시되며, 플랫폼 지오코딩을 사용할 수 없어 `latitude`/`longitude`가 `null`입니다. `kakaoKey` 지오코딩을 사용하세요.
+- 플랫폼 지오코딩은 OS가 제공하는 무료 서비스를 사용하므로 자체 사용 제한이 있습니다 — [Apple](https://developer.apple.com/documentation/corelocation/clgeocoder), [Android](https://developer.android.com/reference/android/location/Geocoder), [geocoding](https://pub.dev/packages/geocoding) 문서를 참고하세요.
 
-<div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
+<div align="center"><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="320" alt="kpostal 스크린샷" /></div>
 
 ## 시작하기
-
-ㄴ
-pubspec.yaml 파일에 kpostal을 추가해주세요:
 
 ```yaml
 dependencies:
   kpostal:
 ```
 
-## 플랫폼별 설정
+```dart
+import 'package:kpostal/kpostal.dart';
 
-**🧑🏻‍💻 기본 제공하는 웹호스팅 사용 시 추가 설정은 없습니다.**
+// 콜백으로 사용
+await Navigator.push(context, MaterialPageRoute(
+  builder: (_) => KpostalView(
+    callback: (Kpostal result) {
+      print(result.address);
+      print(result.latitude);
+    },
+  ),
+));
 
-**[Android] 릴리즈 모드에서는 인터넷 권한 설정을 확인해주세요!**
+// 또는 리턴값으로 받기
+Kpostal result = await Navigator.push(
+  context, MaterialPageRoute(builder: (_) => KpostalView()));
+```
+
+`Kpostal` 결과의 주요 필드: `postCode`, `address`, `roadAddress`, `jibunAddress`, `buildingName`, `sido`, `sigungu`, `latitude`/`longitude`, `kakaoLatitude`/`kakaoLongitude`, `userSelectedAddress` — 전체 목록은 [API 레퍼런스](https://pub.dev/documentation/kpostal/latest/)를 참고하세요.
+
+## 설정
+
+**🧑🏻‍💻 기본 호스팅 페이지 사용 시 Android/iOS는 추가 설정이 없습니다.**
+
+<details>
+<summary><b>Android</b> — 인터넷 권한 (릴리즈 모드)</summary>
 
 ```xml
-// AndroidManifest.xml
+<!-- AndroidManifest.xml -->
 <uses-permission android:name="android.permission.INTERNET"/>
 ```
 
-**[macOS] 앱에 네트워크 entitlement를 추가해주세요.**
+</details>
+
+<details>
+<summary><b>macOS</b> — 네트워크 entitlement</summary>
 
 ```xml
-// macos/Runner/DebugProfile.entitlements & Release.entitlements
+<!-- macos/Runner/DebugProfile.entitlements & Release.entitlements -->
 <key>com.apple.security.network.client</key>
 <true/>
-// [useLocalServer] 사용 시에만 필요
+<!-- [useLocalServer] 사용 시에만 필요 -->
 <key>com.apple.security.network.server</key>
 <true/>
 ```
 
-### ❗️ 로컬서버 사용 (선택)
+</details>
 
-[useLocalServer] 옵션을 통해 로컬서버 호스팅을 사용하면 http통신에 필요한 플랫폼별 설정을 해야 합니다.
+<details>
+<summary><b>로컬 서버</b> (선택, <code>useLocalServer: true</code>) — http 통신 허용</summary>
 
-### Android
+로컬 서버는 검색 페이지를 `http://localhost`로 서빙하므로 cleartext 통신 허용이 필요합니다.
 
-AndroidManifest.xml 파일의 <application>에 `android:usesCleartextTraffic="true"`를 추가해주세요.
+**Android** — `AndroidManifest.xml`의 `<application>`에 `android:usesCleartextTraffic="true"` 추가:
 
 ```xml
 <application
-        android:label="[your_app]"
-        android:icon="@mipmap/ic_launcher"
-        ...
-        android:usesCleartextTraffic="true"
-        ...
-        >
-    ...
-</application>
+    android:label="[your_app]"
+    android:usesCleartextTraffic="true"
+    ...>
 ```
 
-### iOS
-
-info.plist 파일에 `NSAppTransportSecurity`를 추가해주세요.
+**iOS** — `Info.plist`에 `NSAppTransportSecurity` 추가:
 
 ```xml
-<plist version="1.0">
+<key>NSAppTransportSecurity</key>
 <dict>
-    ...
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
-    ...
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
 </dict>
-</plist>
 ```
 
-### 🧩 카카오 지오코딩 사용(\*선택사항)
+</details>
 
-1. [Kakao Developer Site](https://developers.kakao.com) 접속
-2. 개발자 등록 및 앱 생성
-3. 웹 플랫폼 추가: 앱 선택 – [플랫폼] – [Web 플랫폼 등록] – 사이트 도메인 등록
-4. 사이트 도메인 등록: [웹] 플랫폼을 선택하고, [사이트 도메인] 을 등록합니다.
-   - 기본 사용 시, `https://tykann.github.io` 등록
-   - 로컬서버 옵션을 사용 시, `http://localhost:{your port, default is 8080}` 등록
-5. 페이지 상단의 [JavaScript 키]를 지도 API의 appkey로 사용합니다.
+<details>
+<summary><b>카카오 지오코딩</b> (선택, <code>kakaoKey</code>) — <code>kakaoLatitude</code>/<code>kakaoLongitude</code> 받기</summary>
 
-## 사용 예시
+1. [Kakao Developers](https://developers.kakao.com)에서 개발자 등록 후 앱을 생성합니다.
+2. **웹 플랫폼 등록**: 앱 선택 – [플랫폼] – [Web 플랫폼 등록].
+3. 사이트 도메인 등록:
+   - 기본 호스팅: `https://tykann.github.io`
+   - 로컬 서버: `http://localhost:{사용 포트, 기본 8080}`
+4. 페이지 상단의 **JavaScript 키**를 `kakaoKey`로 사용합니다.
 
 ```dart
-import 'package:kpostal/kpostal.dart';
-
-// 콜백 기능으로 사용
-TextButton(
-    onPressed: () async {
-        await Navigator.push(context, MaterialPageRoute(
-            builder: (_) => KpostalView(
-                callback: (Kpostal result) {
-                    print(result.address);
-                },
-            ),
-        ));
-    },
-    child: Text('Search!'),
-),
-
-// 콜백 없이 결과값을 리턴 받아서 사용
-TextButton(
-    onPressed: () async {
-        Kpostal result = await Navigator.push(context, MaterialPageRoute(builder: (_) => KpostalView()));
-        print(result.address);
-    },
-    child: Text('Search!'),
-),
-
-// 로컬서버 사용
 KpostalView(
-    useLocalServer: true, // 기본값은 false
-    localPort: 8080, // 기본값은 8080
-    kakaoKey: '{발급받은 카카오 앱 JS 키}' // 생략 시 기본 플랫폼 지오코딩만 사용
-    callback: ...
+  kakaoKey: '{카카오 앱 JS 키}',
+  callback: (Kpostal result) {
+    print(result.kakaoLatitude);
+  },
 )
 ```
+
+</details>
+
+## 사용법
+
+```dart
+KpostalView(
+  useLocalServer: true,        // 검색 페이지를 localhost로 호스팅 (기본값: false)
+  localPort: 8080,             // 로컬 서버 포트 (기본값: 8080)
+  kakaoKey: '{JS 키}',          // 카카오 지오코딩 사용 (선택)
+  appBar: ...,                 // 커스텀 AppBar (선택)
+  onLoading: ...,              // 커스텀 로딩 위젯 (선택)
+  callback: (Kpostal result) { ... },
+)
+```
+
+## 1.x에서 마이그레이션
+
+대부분의 앱은 **코드 변경이 필요 없습니다** — v2는 웹뷰 엔진을 `flutter_inappwebview`에서 공식 `webview_flutter`로 교체하고 Web/macOS 지원을 추가했습니다.
+
+- Flutter 3.38+ / Dart 3.10+ 필요.
+- Web에서는 `latitude`/`longitude`가 `null` — 좌표가 필요하면 `kakaoKey` 지오코딩을 사용하세요.
+- macOS 앱은 위 네트워크 entitlement 설정이 필요합니다.
+
+자세한 내용은 [CHANGELOG](https://pub.dev/packages/kpostal/changelog)를 확인하세요.
+
+## 로드맵
+
+- [x] v2: 공식 `webview_flutter` 전환, Web & macOS 지원
+- [ ] v2.0.0 정식 릴리즈
+- [ ] 검색 페이지 커스텀 URL — 자체 도메인에 우편번호 페이지 셀프 호스팅 (로컬 서버가 불가능한 Web에서도 완전한 제어 가능)
+- [ ] 임베더블 검색 위젯 (`Scaffold` 없이 바텀시트/다이얼로그 내부에서 사용)
+- [ ] Windows/Linux 지원 — `webview_flutter` 데스크톱 지원 대기 중
+
+아이디어나 문제가 있다면 [이슈를 남겨주세요](https://github.com/TykanN/kpostal/issues) — 기여를 환영합니다!
+
+## 라이선스
+
+[MIT](LICENSE)

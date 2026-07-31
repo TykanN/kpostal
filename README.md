@@ -1,24 +1,36 @@
-[![pub package](https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue)](https://pub.dev/packages/kpostal)
-[![Pub Likes](https://img.shields.io/pub/likes/kpostal)](https://pub.dev/packages/kpostal/score)
-[![Test](https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg)](https://github.com/TykanN/kpostal/actions/workflows/test.yml)
+<p align="center">
+  <a href="https://pub.dev/packages/kpostal">
+    <img src="https://tykann.github.io/kpostal/assets/kpostal_header.png" width="640" alt="kpostal — Korean postal address search for Flutter" />
+  </a>
+</p>
 
-[![English](https://img.shields.io/badge/Language-English-9cf?style=for-the-badge)](README.md)
-[![Korean](https://img.shields.io/badge/Language-Korean-9cf?style=for-the-badge)](README.ko-kr.md)
+<p align="center">
+  <a href="https://pub.dev/packages/kpostal"><img src="https://img.shields.io/pub/v/kpostal.svg?label=kpostal&color=blue" alt="pub version" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/points/kpostal" alt="pub points" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/likes/kpostal" alt="pub likes" /></a>
+  <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/dm/kpostal" alt="downloads" /></a>
+  <a href="https://github.com/TykanN/kpostal/actions/workflows/test.yml"><img src="https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg" alt="test" /></a>
+  <a href="https://github.com/TykanN/kpostal/blob/master/LICENSE"><img src="https://img.shields.io/github/license/TykanN/kpostal" alt="license" /></a>
+</p>
 
-# About kpostal
+<p align="center">
+  <a href="README.md"><img src="https://img.shields.io/badge/Language-English-9cf?style=for-the-badge" alt="English" /></a>
+  <a href="README.ko-kr.md"><img src="https://img.shields.io/badge/Language-한국어-9cf?style=for-the-badge" alt="Korean" /></a>
+</p>
 
-Kpostal package can search for Korean postal addresses using [Kakao postcode service](https://postcode.map.daum.net/guide).  
-This package is inspired by [Kopo](https://pub.dev/packages/kopo) package that is discontinued.
+---
 
-By default, it uses the Address Search page hosted on Github.  
-It's the easiest way to use it.
+**kpostal** is a Korean postal address search widget for Flutter, powered by the [Kakao (Daum) postcode service](https://postcode.map.daum.net/guide). Push a single widget, get a structured address (postcode, road/jibun address, building info, …) back — with optional latitude/longitude geocoding.
 
-To respond to errors that arise from hosting problems, **it also supports hosting local server.**
+Inspired by the discontinued [Kopo](https://pub.dev/packages/kopo) package.
 
-Kpostal also provides latitude, longitude of the address. It uses the free Geocoding services provided by the iOS and Android platforms. This means that there are restrictions to their use. More information can be found in the [Apple documentation for iOS](https://developer.apple.com/documentation/corelocation/clgeocoder) and the [Google documentation for Android](https://developer.android.com/reference/android/location/Geocoder) and the [geocoding](https://pub.dev/packages/geocoding) plugin.
-**If you use [kakao maps api](https://apis.map.kakao.com/web/guide/), you can also get a kakao geocoding value.**
+## Features
 
-Support Null-Safety!
+- 🔎 **Kakao postcode search** as a ready-made `KpostalView` widget — zero configuration to get started.
+- 🌐 **Multi-platform**: Android, iOS, macOS, and Web, built on the official [webview_flutter](https://pub.dev/packages/webview_flutter) (iframe on Web).
+- 📍 **Geocoding built in**: latitude/longitude via free platform geocoding (Android/iOS/macOS), plus optional [Kakao Maps API](https://apis.map.kakao.com/web/guide/) geocoding.
+- 🏠 **Resilient hosting**: uses a GitHub-hosted search page by default, with a local-server fallback (`useLocalServer`) in case of hosting issues.
+- 🎨 **Customizable**: custom `AppBar`, loading indicator, and result callback.
 
 ## Platform Support
 
@@ -26,124 +38,147 @@ Support Null-Safety!
 | :-----: | :-: | :---: | :-: | :-----: | :---: |
 |   ✅    | ✅  |  ✅   | ✅  |   ❌    |  ❌   |
 
-- Powered by [webview_flutter](https://pub.dev/packages/webview_flutter) on Android/iOS/macOS, and an iframe on Web.
-- On Web, `useLocalServer` is not supported (ignored), and platform geocoding is unavailable — `latitude`/`longitude` will be `null`. Use `kakaoKey` geocoding instead.
 - Requires Flutter 3.38+ / Dart 3.10+.
+- On **Web**, `useLocalServer` is ignored and platform geocoding is unavailable (`latitude`/`longitude` are `null`) — use `kakaoKey` geocoding instead.
+- Platform geocoding uses the free OS services with their own usage limits — see the [Apple](https://developer.apple.com/documentation/corelocation/clgeocoder), [Android](https://developer.android.com/reference/android/location/Geocoder), and [geocoding](https://pub.dev/packages/geocoding) docs.
 
-<div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
+<div align="center"><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="320" alt="kpostal screenshot" /></div>
 
-## Getting Started
-
-Add kpostal to your pubspec.yaml file:
+## Quick Start
 
 ```yaml
 dependencies:
   kpostal:
 ```
 
-## Setup
-
-**🧑🏻‍💻 Neither iOS nor Android requires any action when using default hosting.**
-
-**[Android] Check internet permission setting on release mode!**
-
-```xml
-// AndroidManifest.xml
-<uses-permission android:name="android.permission.INTERNET"/>
-```
-
-**[macOS] Add network entitlements to your app.**
-
-```xml
-// macos/Runner/DebugProfile.entitlements & Release.entitlements
-<key>com.apple.security.network.client</key>
-<true/>
-// only if you use [useLocalServer]
-<key>com.apple.security.network.server</key>
-<true/>
-```
-
-### ❗ Use local server (Optional)
-
-If you use the [useLocalServer] option to host a local server, you should make the platform specific settings required for http communication.
-
-### Android
-
-Add `android:usesClearextTraffic="true"` to <application> in AndroidManifest.xml file.
-
-```xml
-<application
-        android:label="[your_app]"
-        android:icon="@mipmap/ic_launcher"
-        ...
-        android:usesCleartextTraffic="true"
-        ...
-        >
-    ...
-</application>
-```
-
-### iOS
-
-Add `NSAppTransportSecurity` to info.plist file.
-
-```xml
-<plist version="1.0">
-<dict>
-    ...
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-    </dict>
-    ...
-</dict>
-</plist>
-```
-
-### 🧩 Kakao geocoding(\*optional)
-
-1. Go to [Kakao Developer Site](https://developers.kakao.com)
-2. Register developer and create app
-3. Add Web Platform: Select App – [Platform] – [Web Platform Registration] – Site Domain Registration
-4. Register Site Domain: Select the Web platform, and register Site Domain.
-   - default, use `https://tykann.github.io`
-   - if you use local server, use `http://localhost:{your port, default is 8080}`
-5. Use the JavaScript key at the top of the page as the app key for the map API.
-
-## Example
-
 ```dart
 import 'package:kpostal/kpostal.dart';
 
 // Use callback.
-TextButton(
-    onPressed: () async {
-        await Navigator.push(context, MaterialPageRoute(
-            builder: (_) => KpostalView(
-                callback: (Kpostal result) {
-                    print(result.address);
-                },
-            ),
-        ));
+await Navigator.push(context, MaterialPageRoute(
+  builder: (_) => KpostalView(
+    callback: (Kpostal result) {
+      print(result.address);
+      print(result.latitude);
     },
-    child: Text('Search!'),
-),
+  ),
+));
 
-// Not use callback.
-TextButton(
-    onPressed: () async {
-        Kpostal result = await Navigator.push(context, MaterialPageRoute(builder: (_) => KpostalView()));
-        print(result.address);
-    },
-    child: Text('Search!'),
-),
+// Or receive the result as a return value.
+Kpostal result = await Navigator.push(
+  context, MaterialPageRoute(builder: (_) => KpostalView()));
+```
 
-// Use local server.
+Key fields on the `Kpostal` result: `postCode`, `address`, `roadAddress`, `jibunAddress`, `buildingName`, `sido`, `sigungu`, `latitude`/`longitude`, `kakaoLatitude`/`kakaoLongitude`, `userSelectedAddress` — see the [API reference](https://pub.dev/documentation/kpostal/latest/) for the full list.
+
+## Setup
+
+**🧑🏻‍💻 With the default hosted page, Android and iOS need no extra setup.**
+
+<details>
+<summary><b>Android</b> — internet permission (release mode)</summary>
+
+```xml
+<!-- AndroidManifest.xml -->
+<uses-permission android:name="android.permission.INTERNET"/>
+```
+
+</details>
+
+<details>
+<summary><b>macOS</b> — network entitlements</summary>
+
+```xml
+<!-- macos/Runner/DebugProfile.entitlements & Release.entitlements -->
+<key>com.apple.security.network.client</key>
+<true/>
+<!-- only if you use [useLocalServer] -->
+<key>com.apple.security.network.server</key>
+<true/>
+```
+
+</details>
+
+<details>
+<summary><b>Local server</b> (optional, <code>useLocalServer: true</code>) — allow http traffic</summary>
+
+The local server serves the search page over `http://localhost`, so cleartext traffic must be allowed.
+
+**Android** — add `android:usesCleartextTraffic="true"` to `<application>` in `AndroidManifest.xml`:
+
+```xml
+<application
+    android:label="[your_app]"
+    android:usesCleartextTraffic="true"
+    ...>
+```
+
+**iOS** — add `NSAppTransportSecurity` to `Info.plist`:
+
+```xml
+<key>NSAppTransportSecurity</key>
+<dict>
+    <key>NSAllowsArbitraryLoads</key>
+    <true/>
+</dict>
+```
+
+</details>
+
+<details>
+<summary><b>Kakao geocoding</b> (optional, <code>kakaoKey</code>) — get <code>kakaoLatitude</code>/<code>kakaoLongitude</code></summary>
+
+1. Go to the [Kakao Developers site](https://developers.kakao.com), register, and create an app.
+2. Add a **Web platform**: App – [Platform] – [Web Platform Registration].
+3. Register the site domain:
+   - default hosting: `https://tykann.github.io`
+   - local server: `http://localhost:{your port, default 8080}`
+4. Use the **JavaScript key** shown at the top of the page as `kakaoKey`.
+
+```dart
 KpostalView(
-    useLocalServer: true, // default is false
-    localPort: 8080, // default is 8080
-    kakaoKey: '{your kakao developer app\'s JS key}' // if not declared, only use platform's geocoding
-    callback: ...
+  kakaoKey: '{your kakao app JS key}',
+  callback: (Kpostal result) {
+    print(result.kakaoLatitude);
+  },
 )
 ```
+
+</details>
+
+## Usage
+
+```dart
+KpostalView(
+  useLocalServer: true,        // host the page on localhost (default: false)
+  localPort: 8080,             // local server port (default: 8080)
+  kakaoKey: '{JS key}',        // enable Kakao geocoding (optional)
+  appBar: ...,                 // custom AppBar (optional)
+  onLoading: ...,              // custom loading widget (optional)
+  callback: (Kpostal result) { ... },
+)
+```
+
+## Migration from 1.x
+
+Most apps need **no code changes** — v2 swaps the webview engine from `flutter_inappwebview` to the official `webview_flutter` and adds Web/macOS support.
+
+- Requires Flutter 3.38+ / Dart 3.10+.
+- On Web, `latitude`/`longitude` are `null` — use `kakaoKey` geocoding if you need coordinates.
+- macOS apps need the network entitlements above.
+
+See the [CHANGELOG](https://pub.dev/packages/kpostal/changelog) for details.
+
+## Roadmap
+
+- [x] v2: migrate to official `webview_flutter`, Web & macOS support
+- [ ] v2.0.0 stable release
+- [ ] Custom search page URL — self-host the postcode page on your own domain (also enables full control on Web, where a local server isn't possible)
+- [ ] Embeddable search widget (usable inside bottom sheets/dialogs without a `Scaffold`)
+- [ ] Windows/Linux support — blocked on `webview_flutter` desktop support
+
+Have an idea or issue? [Open an issue](https://github.com/TykanN/kpostal/issues) — contributions are welcome!
+
+## License
+
+[MIT](LICENSE)

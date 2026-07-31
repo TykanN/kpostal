@@ -1,0 +1,6 @@
+# 문서/GitHub Pages 전용 파일 — 패키지 아카이브에서 제외
+# (assets/kakao_postcode_localhost.html은 번들 에셋이므로 제외하지 않음)
+assets/kpostal_header.png
+assets/screenshot.png
+assets/kakao_postcode.html
+assets/kakao_postcode_v2.html
