@@ -45,9 +45,11 @@
     daum.postcode.load(function () {
       function callbackMessage(message) {
         try {
+          // `onComplete` is the JavaScript channel registered by webview_flutter.
           onComplete.postMessage(message);
         } catch (err) {
-          window.flutter_inappwebview.callHandler('onComplete', message);
+          // On Flutter web the page runs inside an iframe.
+          window.parent.postMessage(message, "*");
         }
       }
       new daum.Postcode({

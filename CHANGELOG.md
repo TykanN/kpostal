@@ -1,3 +1,18 @@
+## 2.0.0-beta.1
+
+### BREAKING CHANGES
+
+- Migrated from `flutter_inappwebview` to the official `webview_flutter` package. (thanks to @huynguyennovem, #28)
+- Hosted search page moved to `kakao_postcode_v2.html`. The existing `kakao_postcode.html` is kept untouched for 1.x users.
+- Updated minimum supported SDK version to Flutter 3.38/Dart 3.10.
+- Updated `geocoding` dependency to `^5.0.0`.
+
+### NEW FEATURES
+
+- **Web support**: renders the postcode page in an iframe. `useLocalServer` is not supported and ignored on the web.
+- **macOS support** via `webview_flutter` and `geocoding` 5.0.
+- Platform geocoding(`latitude`/`longitude`) works on Android/iOS/macOS. On other platforms it returns `null`; use `kakaoKey` geocoding instead.
+
 ## 1.1.0
 
 - Updated minimum supported SDK version to Flutter 3.24/Dart 3.5.

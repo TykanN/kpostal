@@ -20,6 +20,16 @@ Kpostal also provides latitude, longitude of the address. It uses the free Geoco
 
 Support Null-Safety!
 
+## Platform Support
+
+| Android | iOS | macOS | Web | Windows | Linux |
+| :-----: | :-: | :---: | :-: | :-----: | :---: |
+|   ✅    | ✅  |  ✅   | ✅  |   ❌    |  ❌   |
+
+- Powered by [webview_flutter](https://pub.dev/packages/webview_flutter) on Android/iOS/macOS, and an iframe on Web.
+- On Web, `useLocalServer` is not supported (ignored), and platform geocoding is unavailable — `latitude`/`longitude` will be `null`. Use `kakaoKey` geocoding instead.
+- Requires Flutter 3.38+ / Dart 3.10+.
+
 <div><img src="https://tykann.github.io/kpostal/assets/screenshot.png" width="375"></div>
 
 ## Getting Started
@@ -40,6 +50,17 @@ dependencies:
 ```xml
 // AndroidManifest.xml
 <uses-permission android:name="android.permission.INTERNET"/>
+```
+
+**[macOS] Add network entitlements to your app.**
+
+```xml
+// macos/Runner/DebugProfile.entitlements & Release.entitlements
+<key>com.apple.security.network.client</key>
+<true/>
+// only if you use [useLocalServer]
+<key>com.apple.security.network.server</key>
+<true/>
 ```
 
 ### ❗ Use local server (Optional)
