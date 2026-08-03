@@ -172,7 +172,7 @@ See the [CHANGELOG](https://pub.dev/packages/kpostal/changelog) for details.
 ## Roadmap
 
 - [x] v2: migrate to official `webview_flutter`, Web & macOS support
-- [ ] v2.0.0 stable release
+- [x] v2.0.0 stable release
 - [ ] Custom search page URL — self-host the postcode page on your own domain (also enables full control on Web, where a local server isn't possible)
 - [ ] Embeddable search widget (usable inside bottom sheets/dialogs without a `Scaffold`)
 - [ ] Windows/Linux support — blocked on `webview_flutter` desktop support

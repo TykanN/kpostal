@@ -1,3 +1,24 @@
+## 2.0.0
+
+First stable release of v2. Consolidates all changes since 1.1.0, including the 2.0.0-beta.1/beta.2 entries below.
+
+### BREAKING CHANGES
+
+- Migrated from `flutter_inappwebview` to the official `webview_flutter` package. (thanks to @huynguyennovem, #28)
+- Hosted search page moved to `kakao_postcode_v2.html`. The existing `kakao_postcode.html` is kept untouched for 1.x users.
+- Updated minimum supported SDK version to Flutter 3.38/Dart 3.10.
+- Updated `geocoding` dependency to `^5.0.0`.
+
+### NEW FEATURES
+
+- **Web support**: renders the postcode page in an iframe. `useLocalServer` is not supported and ignored on the web.
+- **macOS support** via `webview_flutter` and `geocoding` 5.0.
+- Platform geocoding (`latitude`/`longitude`) works on Android/iOS/macOS. On other platforms it returns `null`; use `kakaoKey` geocoding instead.
+
+### FIXES
+
+- Fixed a crash (`UnimplementedError`) when opening `KpostalView` on macOS: `setBackgroundColor` is not implemented by WKWebView on macOS and is now skipped there.
+
 ## 2.0.0-beta.2
 
 ### FIXES
