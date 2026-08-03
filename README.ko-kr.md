@@ -172,7 +172,7 @@ KpostalView(
 ## 로드맵
 
 - [x] v2: 공식 `webview_flutter` 전환, Web & macOS 지원
-- [ ] v2.0.0 정식 릴리즈
+- [x] v2.0.0 정식 릴리즈
 - [ ] 검색 페이지 커스텀 URL — 자체 도메인에 우편번호 페이지 셀프 호스팅 (로컬 서버가 불가능한 Web에서도 완전한 제어 가능)
 - [ ] 임베더블 검색 위젯 (`Scaffold` 없이 바텀시트/다이얼로그 내부에서 사용)
 - [ ] Windows/Linux 지원 — `webview_flutter` 데스크톱 지원 대기 중
