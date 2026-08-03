@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:kpostal/src/kpostal_server.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -32,7 +34,6 @@ class _KpostalWebViewState extends State<KpostalWebView> {
     super.initState();
     _controller = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..setBackgroundColor(Colors.white)
       // HTML에서 `onComplete.postMessage(message)`로 선택한 주소를 전달합니다.
       ..addJavaScriptChannel(
         'onComplete',
@@ -42,6 +43,11 @@ class _KpostalWebViewState extends State<KpostalWebView> {
       ..setNavigationDelegate(
         NavigationDelegate(onPageFinished: (_) => widget.onLoadFinished()),
       );
+    // macOS의 WKWebView는 setBackgroundColor(setOpaque)가 미구현이라 호출 시
+    // UnimplementedError가 발생합니다.
+    if (!Platform.isMacOS) {
+      _controller.setBackgroundColor(Colors.white);
+    }
     _load();
   }
 
