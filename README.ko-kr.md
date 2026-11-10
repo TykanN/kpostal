@@ -10,7 +10,7 @@
   <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/likes/kpostal" alt="pub likes" /></a>
   <a href="https://pub.dev/packages/kpostal/score"><img src="https://img.shields.io/pub/dm/kpostal" alt="downloads" /></a>
   <a href="https://github.com/TykanN/kpostal/actions/workflows/test.yml"><img src="https://github.com/TykanN/kpostal/actions/workflows/test.yml/badge.svg" alt="test" /></a>
-  <a href="https://github.com/TykanN/kpostal/blob/master/LICENSE"><img src="https://img.shields.io/github/license/TykanN/kpostal" alt="license" /></a>
+  <a href="https://github.com/TykanN/kpostal/blob/main/LICENSE"><img src="https://img.shields.io/github/license/TykanN/kpostal" alt="license" /></a>
 </p>
 
 <p align="center">
