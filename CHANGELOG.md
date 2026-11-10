@@ -1,3 +1,10 @@
+## 2.0.1
+
+### FIXES
+
+- Load the Kakao postcode script from `t1.kakaocdn.net` instead of `t1.daumcdn.net`. Kakao stops serving `*.daumcdn.net` on 2026-12-01, after which the search page would stay blank. (thanks to @nine-one91, #33)
+- The hosted search pages (`kakao_postcode.html` for 1.x, `kakao_postcode_v2.html` for 2.x) are updated in place, so apps that use the default hosted page keep working without an upgrade. Apps that set `useLocalServer: true` load the page bundled in the package and must upgrade to this version.
+
 ## 2.0.0
 
 First stable release of v2. Consolidates all changes since 1.1.0, including the 2.0.0-beta.1/beta.2 entries below.
