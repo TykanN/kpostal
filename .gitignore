@@ -75,7 +75,9 @@ pubspec.lock
 !**/ios/**/default.pbxuser
 !**/ios/**/default.perspectivev3
 
-# FVM Version Cache
-.fvm/
 
 .vscode/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+/.ignore
