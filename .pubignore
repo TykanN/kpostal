@@ -78,6 +78,10 @@ pubspec.lock
 
 .vscode/
 
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/
+/.ignore
+
 # --- 패키지 아카이브 전용 제외 (문서/GitHub Pages 호스팅 파일) ---
 # (assets/kakao_postcode_localhost.html은 번들 에셋이므로 제외하지 않음)
 assets/kpostal_header.png
